@@ -41,76 +41,108 @@ export function RingCalculator() {
 
   return (
     <TooltipProvider>
-      <div className="w-full max-w-4xl mx-auto space-y-4">
-      <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
-        <CardHeader className="pb-4">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
-              <Gem className="h-4 w-4" />
-            </div>
-            <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-              Varyant Fiyat Hesaplayıcı
-            </CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4 p-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="referenceWeight" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                <Gem className="h-3.5 w-3.5 text-slate-500" />
-                Referans Gram ({REFERENCE_SIZE} Numara)
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>16 numara yüzük için referans gram değerini girin. Diğer boylar bu değere göre orantılı olarak hesaplanacak.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </Label>
-              <Input
-                id="referenceWeight"
-                type="number"
-                step="0.01"
-                placeholder="Örn: 5.0"
-                className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all focus:scale-[1.02]"
-                value={referenceWeight}
-                onChange={(e) => setReferenceWeight(e.target.value)}
-              />
-            </div>
+      <div className="w-full max-w-6xl mx-auto space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                  <Gem className="h-4 w-4" />
+                </div>
+                <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                  Varyant Fiyat Hesaplayıcı
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4 p-5">
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="referenceWeight" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                    <Gem className="h-3.5 w-3.5 text-slate-500" />
+                    Referans Gram ({REFERENCE_SIZE} Numara)
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p>16 numara yüzük için referans gram değerini girin. Diğer boylar bu değere göre orantılı olarak hesaplanacak.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </Label>
+                  <Input
+                    id="referenceWeight"
+                    type="number"
+                    step="0.01"
+                    placeholder="Örn: 5.0"
+                    className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all focus:scale-[1.02]"
+                    value={referenceWeight}
+                    onChange={(e) => setReferenceWeight(e.target.value)}
+                  />
+                </div>
 
-            <div className="space-y-1.5">
-              <Label htmlFor="referencePrice" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                <DollarSign className="h-3.5 w-3.5 text-slate-500" />
-                Referans Fiyat ({REFERENCE_SIZE} Numara)
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>16 numara yüzük için referans fiyatı girin. Grup bazlı indirim/ek ücret uygulanarak diğer boyların fiyatları hesaplanacak.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </Label>
-              <Input
-                id="referencePrice"
-                type="number"
-                step="0.01"
-                placeholder="Örn: 1000"
-                className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all focus:scale-[1.02]"
-                value={referencePrice}
-                onChange={(e) => setReferencePrice(e.target.value)}
-              />
-            </div>
-          </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="referencePrice" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                    <DollarSign className="h-3.5 w-3.5 text-slate-500" />
+                    Referans Fiyat ({REFERENCE_SIZE} Numara)
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p>16 numara yüzük için referans fiyatı girin. Grup bazlı indirim/ek ücret uygulanarak diğer boyların fiyatları hesaplanacak.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </Label>
+                  <Input
+                    id="referencePrice"
+                    type="number"
+                    step="0.01"
+                    placeholder="Örn: 1000"
+                    className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all focus:scale-[1.02]"
+                    value={referencePrice}
+                    onChange={(e) => setReferencePrice(e.target.value)}
+                  />
+                </div>
+
+                {(!referenceWeight || parseFloat(referenceWeight) <= 0) && (!referencePrice || parseFloat(referencePrice) <= 0) && (
+                  <div className="mt-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-center">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Referans gram veya fiyat değerini girin
+                    </p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
+                      Gram veya fiyat değerlerinden en az birini girmeniz gerekiyor
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex justify-center pt-2">
+                  <MaterialSettings
+                    onMaterialsChange={() => {}}
+                    onLossSettingsChange={() => {}}
+                    onRingGroupPriceSettingsChange={(settings) => {
+                      setRingGroupPriceSettings(settings);
+                    }}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {(parseFloat(referenceWeight) > 0 || parseFloat(referencePrice) > 0) && (
-            <div className="mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-3 flex items-center gap-2">
-                <Gem className="h-4 w-4 text-blue-500" />
-                Hesaplanan Varyantlar
-              </h3>
-              <div className="space-y-3">
+            <div className="lg:sticky lg:top-4 lg:h-fit">
+              <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl h-full">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                      <Gem className="h-4 w-4" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                      Hesaplanan Varyantlar
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-5">
+                  <div className="space-y-3">
                 {results.map((group, index) => {
                   const groupColors = {
                     "Küçük Grup": {
@@ -210,33 +242,13 @@ export function RingCalculator() {
                       )}
                     </div>
                   );
-                })}
-              </div>
+                  })}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           )}
-
-          {(!referenceWeight || parseFloat(referenceWeight) <= 0) && (!referencePrice || parseFloat(referencePrice) <= 0) && (
-            <div className="mt-6 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-center">
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                Referans gram veya fiyat değerini girin, tüm boylar otomatik hesaplanacak
-              </p>
-              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-                Gram veya fiyat değerlerinden en az birini girmeniz gerekiyor
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      <div className="flex justify-center">
-        <MaterialSettings
-          onMaterialsChange={() => {}}
-          onLossSettingsChange={() => {}}
-          onRingGroupPriceSettingsChange={(settings) => {
-            setRingGroupPriceSettings(settings);
-          }}
-        />
-      </div>
+        </div>
       </div>
     </TooltipProvider>
   );
