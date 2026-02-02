@@ -159,7 +159,7 @@ export function MaterialSettings({
           Ayarlar
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-6">
+      <DialogContent className="max-w-5xl w-[90vw] max-h-[90vh] overflow-y-auto p-6">
         <DialogHeader className="pb-4">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
@@ -182,7 +182,7 @@ export function MaterialSettings({
               </div>
             </CardHeader>
             <CardContent className="px-4 pb-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {materials.map((material) => (
                   <div key={material.id} className="space-y-1.5">
                     <Label htmlFor={material.id} className="text-sm font-medium">
