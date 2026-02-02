@@ -55,29 +55,22 @@ export function calculateRingWeights(
   const smallGroupDiscount = priceSettings?.smallGroupDiscount ?? 10;
   const largeGroupSurcharge = priceSettings?.largeGroupSurcharge ?? 15;
 
-  const calculateResult = (size: number): RingWeightResult => {
+  // Baz fiyat = Referans fiyat (16 numara için girilen fiyat)
+  const basePrice = referencePrice > 0 ? referencePrice : 0;
+
+  // Grup bazlı fiyatlar hesapla
+  const smallGroupPrice = basePrice > 0 ? basePrice * (1 - smallGroupDiscount / 100) : 0;
+  const mediumGroupPrice = basePrice > 0 ? basePrice * 1.00 : 0; // Değişiklik yok
+  const largeGroupPrice = basePrice > 0 ? basePrice * (1 + largeGroupSurcharge / 100) : 0;
+
+  const calculateResult = (size: number, groupPrice: number): RingWeightResult => {
     // Lineer orantı: (Boy / 16) × Referans Gram
     const weight = (size / REFERENCE_SIZE) * referenceWeight;
-    
-    // Lineer orantı: (Boy / 16) × Referans Fiyat
-    let price = referencePrice > 0 ? (size / REFERENCE_SIZE) * referencePrice : 0;
-    
-    // Grup bazlı fiyat ayarlamaları
-    if (price > 0) {
-      if (size >= 10 && size <= 13) {
-        // Küçük grup: %10 indirim (varsayılan)
-        price = price * (1 - smallGroupDiscount / 100);
-      } else if (size >= 18 && size <= 20) {
-        // Büyük grup: %15 ek ücret (varsayılan)
-        price = price * (1 + largeGroupSurcharge / 100);
-      }
-      // Orta grup (14-17): değişiklik yok
-    }
     
     return {
       size,
       weight: Math.round(weight * 100) / 100, // 2 ondalık basamak
-      price: Math.round(price * 100) / 100, // 2 ondalık basamak
+      price: Math.round(groupPrice * 100) / 100, // 2 ondalık basamak - grup bazlı aynı fiyat
     };
   };
 
@@ -85,17 +78,17 @@ export function calculateRingWeights(
     {
       groupName: "Küçük Grup",
       sizes: [10, 11, 12, 13],
-      results: [10, 11, 12, 13].map(calculateResult),
+      results: [10, 11, 12, 13].map((size) => calculateResult(size, smallGroupPrice)),
     },
     {
       groupName: "Orta Grup",
       sizes: [14, 15, 16, 17],
-      results: [14, 15, 16, 17].map(calculateResult),
+      results: [14, 15, 16, 17].map((size) => calculateResult(size, mediumGroupPrice)),
     },
     {
       groupName: "Büyük Grup",
       sizes: [18, 19, 20],
-      results: [18, 19, 20].map(calculateResult),
+      results: [18, 19, 20].map((size) => calculateResult(size, largeGroupPrice)),
     },
   ];
 }

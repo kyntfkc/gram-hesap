@@ -44,7 +44,7 @@ export function RingCalculator() {
             <div className="space-y-1.5">
               <Label htmlFor="referenceWeight" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                 <Gem className="h-3.5 w-3.5 text-slate-500" />
-                Referans Gram ({REFERENCE_SIZE} Numara) <span className="text-red-500">*</span>
+                Referans Gram ({REFERENCE_SIZE} Numara)
               </Label>
               <Input
                 id="referenceWeight"
