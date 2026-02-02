@@ -162,34 +162,6 @@ export function WeightCalculator() {
             )}
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30">
-                <Settings2 className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="moldFinishing" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                    Kalıp Tesviye Kayıpları
-                  </Label>
-                  {includeMoldFinishing && (
-                    <span className="px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold">
-                      {lossSettings.moldFinishingLoss}%
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  {includeMoldFinishing ? "Hesaba dahil" : "Hesaba dahil değil"}
-                </p>
-              </div>
-            </div>
-            <Switch
-              id="moldFinishing"
-              checked={includeMoldFinishing}
-              onCheckedChange={setIncludeMoldFinishing}
-            />
-          </div>
-
           <div className="space-y-1.5">
             <Label htmlFor="stoneWeight" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
               <Gem className="h-3.5 w-3.5 text-slate-500" />
@@ -261,6 +233,34 @@ export function WeightCalculator() {
               id="earringBack"
               checked={includeEarringBack}
               onCheckedChange={setIncludeEarringBack}
+            />
+          </div>
+
+          <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+                <Settings2 className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="moldFinishing" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                    Kalıp Tesviye Kayıpları
+                  </Label>
+                  {includeMoldFinishing && (
+                    <span className="px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold">
+                      {lossSettings.moldFinishingLoss}%
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  {includeMoldFinishing ? "Hesaba dahil" : "Hesaba dahil değil"}
+                </p>
+              </div>
+            </div>
+            <Switch
+              id="moldFinishing"
+              checked={includeMoldFinishing}
+              onCheckedChange={setIncludeMoldFinishing}
             />
           </div>
         </CardContent>
