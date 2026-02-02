@@ -13,8 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calculator, Ruler, Gem, Settings2, Link } from "lucide-react";
+import { Calculator, Ruler, Gem, Settings2, Link, HelpCircle } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { calculateWeight, CalculationParams, CalculationResult } from "@/lib/calculations";
 import { weightCalculatorSchema, WeightCalculatorFormData } from "@/lib/schema";
 import { Material, getMaterials, defaultMaterial } from "@/lib/materials";
@@ -92,10 +93,11 @@ export function WeightCalculator() {
   }, [watchedValues, lossSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack]);
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-4">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
-        <CardContent className="space-y-4 p-5">
+    <TooltipProvider>
+      <div className="w-full max-w-6xl mx-auto space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
+          <CardContent className="space-y-4 p-5">
           <div className="flex items-center gap-2 mb-4">
             <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
               <Calculator className="h-4 w-4" />
@@ -109,17 +111,28 @@ export function WeightCalculator() {
             <Label htmlFor="volume" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
               <Ruler className="h-3.5 w-3.5 text-slate-500" />
               Hacim (mm³) <span className="text-red-500">*</span>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>3D modelinizin hacmini mm³ cinsinden girin. Örnek: 50000 mm³ = 50 cm³</p>
+                </TooltipContent>
+              </Tooltip>
             </Label>
             <Input
               id="volume"
               type="number"
               step="0.01"
               placeholder="Örn: 50000"
-              className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all"
+              className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                errors.volume ? "border-red-300 dark:border-red-700 focus:border-red-500 focus:ring-red-500/20 animate-in shake duration-300" : ""
+              }`}
               {...register("volume", { valueAsNumber: true })}
             />
             {errors.volume && (
-              <p className="text-sm text-red-500 font-medium flex items-center gap-1">
+              <p className="text-sm text-red-500 font-medium flex items-center gap-1 animate-in fade-in slide-in-from-top-1 duration-200">
+                <span className="text-red-500">⚠</span>
                 {errors.volume.message}
               </p>
             )}
@@ -129,6 +142,14 @@ export function WeightCalculator() {
             <Label htmlFor="material" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
               <Settings2 className="h-3.5 w-3.5 text-slate-500" />
               Malzeme <span className="text-red-500">*</span>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>Kullanılacak malzemenin yoğunluğunu seçin. Yoğunluk değerlerini ayarlar menüsünden özelleştirebilirsiniz.</p>
+                </TooltipContent>
+              </Tooltip>
             </Label>
             <Controller
               name="materialDensity"
@@ -144,7 +165,9 @@ export function WeightCalculator() {
                     }
                   }}
                 >
-                  <SelectTrigger className="h-10 w-full border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20">
+                  <SelectTrigger className={`h-10 w-full border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                    errors.materialDensity ? "border-red-300 dark:border-red-700 focus:border-red-500 focus:ring-red-500/20" : ""
+                  }`}>
                     <SelectValue placeholder="Malzeme seçin" />
                   </SelectTrigger>
                   <SelectContent>
@@ -158,7 +181,10 @@ export function WeightCalculator() {
               )}
             />
             {errors.materialDensity && (
-              <p className="text-sm text-red-500 font-medium">{errors.materialDensity.message}</p>
+              <p className="text-sm text-red-500 font-medium flex items-center gap-1 animate-in fade-in slide-in-from-top-1 duration-200">
+                <span className="text-red-500">⚠</span>
+                {errors.materialDensity.message}
+              </p>
             )}
           </div>
 
@@ -166,6 +192,14 @@ export function WeightCalculator() {
             <Label htmlFor="stoneWeight" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
               <Gem className="h-3.5 w-3.5 text-slate-500" />
               Taş Ağırlığı (g)
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>Ürüne eklenecek taşların toplam ağırlığını gram cinsinden girin. Örnek: 2.5 g</p>
+                </TooltipContent>
+              </Tooltip>
             </Label>
             <Input
               id="stoneWeight"
@@ -173,11 +207,16 @@ export function WeightCalculator() {
               step="0.01"
               min="0"
               placeholder="Örn: 2.5"
-              className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all"
+              className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                errors.stoneWeight ? "border-red-300 dark:border-red-700 focus:border-red-500 focus:ring-red-500/20" : ""
+              }`}
               {...register("stoneWeight", { valueAsNumber: true })}
             />
             {errors.stoneWeight && (
-              <p className="text-sm text-red-500 font-medium">{errors.stoneWeight.message}</p>
+              <p className="text-sm text-red-500 font-medium flex items-center gap-1 animate-in fade-in slide-in-from-top-1 duration-200">
+                <span className="text-red-500">⚠</span>
+                {errors.stoneWeight.message}
+              </p>
             )}
           </div>
 
@@ -191,6 +230,14 @@ export function WeightCalculator() {
                   <Label htmlFor="necklaceTip" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
                     Kolye Tepeliği
                   </Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>Kolye tepeliği ekleniyorsa açın. +0.15 g ağırlık eklenir.</p>
+                    </TooltipContent>
+                  </Tooltip>
                   {includeNecklaceTip && (
                     <span className="px-1.5 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">
                       +0.15 g
@@ -219,6 +266,14 @@ export function WeightCalculator() {
                   <Label htmlFor="earringBack" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
                     Küpe Çivi/Kelebek
                   </Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>Küpe çivi veya kelebek ekleniyorsa açın. +0.40 g ağırlık eklenir.</p>
+                    </TooltipContent>
+                  </Tooltip>
                   {includeEarringBack && (
                     <span className="px-1.5 py-0.5 rounded-md bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs font-bold">
                       +0.40 g
@@ -247,6 +302,14 @@ export function WeightCalculator() {
                   <Label htmlFor="moldFinishing" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
                     Kalıp Tesviye Kayıpları
                   </Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>Kalıp tesviye işlemi sırasında oluşan kayıpları hesaba dahil etmek için açın. Yüzde değerini ayarlar menüsünden belirleyebilirsiniz.</p>
+                    </TooltipContent>
+                  </Tooltip>
                   {includeMoldFinishing && (
                     <span className="px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold">
                       {lossSettings.moldFinishingLoss}%
@@ -278,7 +341,8 @@ export function WeightCalculator() {
           onLossSettingsChange={setLossSettings}
         />
       </div>
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }
 

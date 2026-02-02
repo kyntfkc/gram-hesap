@@ -26,7 +26,7 @@ import {
   resetRingGroupPriceSettings,
   defaultRingGroupPriceSettings,
 } from "@/lib/settings";
-import { Settings } from "lucide-react";
+import { Settings, Database, TrendingDown, Percent, RotateCcw } from "lucide-react";
 
 interface MaterialSettingsProps {
   onMaterialsChange: (materials: Material[]) => void;
@@ -159,19 +159,29 @@ export function MaterialSettings({
           Ayarlar
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="pb-3">
-          <DialogTitle className="text-lg">Ayarlar</DialogTitle>
-          <DialogDescription className="text-sm">
-            Malzeme yoğunlukları ve kayıp değerlerini özelleştirebilirsiniz.
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-6">
+        <DialogHeader className="pb-4">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+              <Settings className="h-4 w-4" />
+            </div>
+            <DialogTitle className="text-xl font-bold">Ayarlar</DialogTitle>
+          </div>
+          <DialogDescription className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+            Malzeme yoğunlukları, kayıp değerleri ve fiyat ayarlamalarını özelleştirebilirsiniz.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-3">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Malzeme Yoğunlukları (g/cm³)</CardTitle>
+        <div className="space-y-4">
+          <Card className="border-slate-200 dark:border-slate-700 shadow-sm">
+            <CardHeader className="pb-3 pt-4 px-4">
+              <div className="flex items-center gap-2">
+                <div className="p-1 rounded-md bg-blue-100 dark:bg-blue-900/30">
+                  <Database className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <CardTitle className="text-base font-semibold">Malzeme Yoğunlukları (g/cm³)</CardTitle>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-2.5 pt-0">
+            <CardContent className="space-y-3 px-4 pb-4">
               {materials.map((material) => (
                 <div key={material.id} className="space-y-1.5">
                   <Label htmlFor={material.id} className="text-sm font-medium">
@@ -193,11 +203,16 @@ export function MaterialSettings({
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Kayıp Değerleri (%)</CardTitle>
+          <Card className="border-slate-200 dark:border-slate-700 shadow-sm">
+            <CardHeader className="pb-3 pt-4 px-4">
+              <div className="flex items-center gap-2">
+                <div className="p-1 rounded-md bg-amber-100 dark:bg-amber-900/30">
+                  <TrendingDown className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <CardTitle className="text-base font-semibold">Kayıp Değerleri (%)</CardTitle>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-2.5 pt-0">
+            <CardContent className="space-y-3 px-4 pb-4">
               <div className="space-y-1.5">
                 <Label htmlFor="moldFinishingLoss" className="text-sm font-medium">
                   Kalıp Tesviye Kayıpları
@@ -237,11 +252,16 @@ export function MaterialSettings({
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Yüzük Grup Fiyat Ayarlamaları (%)</CardTitle>
+          <Card className="border-slate-200 dark:border-slate-700 shadow-sm">
+            <CardHeader className="pb-3 pt-4 px-4">
+              <div className="flex items-center gap-2">
+                <div className="p-1 rounded-md bg-purple-100 dark:bg-purple-900/30">
+                  <Percent className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+                </div>
+                <CardTitle className="text-base font-semibold">Yüzük Grup Fiyat Ayarlamaları (%)</CardTitle>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-2.5 pt-0">
+            <CardContent className="space-y-3 px-4 pb-4">
               <div className="space-y-1.5">
                 <Label htmlFor="smallGroupDiscount" className="text-sm font-medium">
                   Küçük Grup İndirimi (10-13 ölçü)
@@ -281,8 +301,9 @@ export function MaterialSettings({
             </CardContent>
           </Card>
 
-          <div className="flex justify-end pt-1">
-            <Button variant="outline" size="sm" onClick={handleReset}>
+          <div className="flex justify-end pt-2 border-t border-slate-200 dark:border-slate-700">
+            <Button variant="outline" size="sm" onClick={handleReset} className="gap-2">
+              <RotateCcw className="h-3.5 w-3.5" />
               Tümünü Varsayılana Dön
             </Button>
           </div>

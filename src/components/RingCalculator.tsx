@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Gem, DollarSign, ChevronDown, ChevronUp } from "lucide-react";
+import { Gem, DollarSign, ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { calculateRingWeights, REFERENCE_SIZE } from "@/lib/ringCalculations";
 import { getRingGroupPriceSettings, RingGroupPriceSettings } from "@/lib/settings";
 import { MaterialSettings } from "./MaterialSettings";
@@ -39,7 +40,8 @@ export function RingCalculator() {
   );
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-4">
+    <TooltipProvider>
+      <div className="w-full max-w-4xl mx-auto space-y-4">
       <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
         <CardHeader className="pb-4">
           <div className="flex items-center gap-2">
@@ -57,13 +59,21 @@ export function RingCalculator() {
               <Label htmlFor="referenceWeight" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                 <Gem className="h-3.5 w-3.5 text-slate-500" />
                 Referans Gram ({REFERENCE_SIZE} Numara)
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>16 numara yüzük için referans gram değerini girin. Diğer boylar bu değere göre orantılı olarak hesaplanacak.</p>
+                  </TooltipContent>
+                </Tooltip>
               </Label>
               <Input
                 id="referenceWeight"
                 type="number"
                 step="0.01"
                 placeholder="Örn: 5.0"
-                className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all"
+                className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all focus:scale-[1.02]"
                 value={referenceWeight}
                 onChange={(e) => setReferenceWeight(e.target.value)}
               />
@@ -73,13 +83,21 @@ export function RingCalculator() {
               <Label htmlFor="referencePrice" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                 <DollarSign className="h-3.5 w-3.5 text-slate-500" />
                 Referans Fiyat ({REFERENCE_SIZE} Numara)
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>16 numara yüzük için referans fiyatı girin. Grup bazlı indirim/ek ücret uygulanarak diğer boyların fiyatları hesaplanacak.</p>
+                  </TooltipContent>
+                </Tooltip>
               </Label>
               <Input
                 id="referencePrice"
                 type="number"
                 step="0.01"
                 placeholder="Örn: 1000"
-                className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all"
+                className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all focus:scale-[1.02]"
                 value={referencePrice}
                 onChange={(e) => setReferencePrice(e.target.value)}
               />
@@ -87,7 +105,7 @@ export function RingCalculator() {
           </div>
 
           {(parseFloat(referenceWeight) > 0 || parseFloat(referencePrice) > 0) && (
-            <div className="mt-6">
+            <div className="mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-3 flex items-center gap-2">
                 <Gem className="h-4 w-4 text-blue-500" />
                 Hesaplanan Varyantlar
@@ -121,11 +139,12 @@ export function RingCalculator() {
                   return (
                     <div
                       key={group.groupName}
-                      className={`rounded-lg border ${colors.border} overflow-hidden bg-gradient-to-br ${colors.bg} transition-all`}
+                      className={`rounded-lg border ${colors.border} overflow-hidden bg-gradient-to-br ${colors.bg} transition-all animate-in fade-in slide-in-from-bottom-2 duration-300`}
+                      style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <button
                         onClick={() => toggleGroup(group.groupName)}
-                        className={`w-full px-3 py-2.5 ${colors.header} border-b ${colors.border} flex items-center justify-between hover:opacity-90 transition-all`}
+                        className={`w-full px-3 py-2.5 ${colors.header} border-b ${colors.border} flex items-center justify-between hover:opacity-90 transition-all active:scale-[0.98]`}
                       >
                         <div className="flex items-center gap-2">
                           {isOpen ? (
@@ -151,7 +170,7 @@ export function RingCalculator() {
                         )}
                       </button>
                       {isOpen && (
-                        <>
+                        <div className="animate-in fade-in slide-in-from-top-2 duration-300">
                           <div className={`grid ${parseFloat(referencePrice) > 0 ? 'grid-cols-3' : 'grid-cols-2'} gap-3 px-3 py-1.5 bg-white/30 dark:bg-slate-800/20 border-b ${colors.border}`}>
                             <div className={`text-xs font-bold ${colors.text} uppercase tracking-wider`}>
                               Boy
@@ -187,7 +206,7 @@ export function RingCalculator() {
                               </div>
                             ))}
                           </div>
-                        </>
+                        </div>
                       )}
                     </div>
                   );
@@ -218,7 +237,8 @@ export function RingCalculator() {
           }}
         />
       </div>
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }
 
