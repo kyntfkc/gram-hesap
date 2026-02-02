@@ -159,7 +159,7 @@ export function MaterialSettings({
           Ayarlar
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-6">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-6">
         <DialogHeader className="pb-4">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
@@ -181,25 +181,27 @@ export function MaterialSettings({
                 <CardTitle className="text-base font-semibold">Malzeme Yoğunlukları (g/cm³)</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3 px-4 pb-4">
-              {materials.map((material) => (
-                <div key={material.id} className="space-y-1.5">
-                  <Label htmlFor={material.id} className="text-sm font-medium">
-                    {material.name}
-                  </Label>
-                  <Input
-                    id={material.id}
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={material.density}
-                    onChange={(e) =>
-                      handleDensityChange(material.id, parseFloat(e.target.value) || 0)
-                    }
-                    className="h-9"
-                  />
-                </div>
-              ))}
+            <CardContent className="px-4 pb-4">
+              <div className="grid grid-cols-2 gap-4">
+                {materials.map((material) => (
+                  <div key={material.id} className="space-y-1.5">
+                    <Label htmlFor={material.id} className="text-sm font-medium">
+                      {material.name}
+                    </Label>
+                    <Input
+                      id={material.id}
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={material.density}
+                      onChange={(e) =>
+                        handleDensityChange(material.id, parseFloat(e.target.value) || 0)
+                      }
+                      className="h-9"
+                    />
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
 
@@ -212,42 +214,44 @@ export function MaterialSettings({
                 <CardTitle className="text-base font-semibold">Kayıp Değerleri (%)</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3 px-4 pb-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="moldFinishingLoss" className="text-sm font-medium">
-                  Kalıp Tesviye Kayıpları
-                </Label>
-                <Input
-                  id="moldFinishingLoss"
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="100"
-                  value={lossInputs.moldFinishingLoss}
-                  onChange={(e) =>
-                    handleLossInputChange("moldFinishingLoss", e.target.value)
-                  }
-                  onBlur={() => handleLossBlur("moldFinishingLoss")}
-                  className="h-9"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="productionLoss" className="text-sm font-medium">
-                  Üretim Kayıpları
-                </Label>
-                <Input
-                  id="productionLoss"
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="100"
-                  value={lossInputs.productionLoss}
-                  onChange={(e) =>
-                    handleLossInputChange("productionLoss", e.target.value)
-                  }
-                  onBlur={() => handleLossBlur("productionLoss")}
-                  className="h-9"
-                />
+            <CardContent className="px-4 pb-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="moldFinishingLoss" className="text-sm font-medium">
+                    Kalıp Tesviye Kayıpları
+                  </Label>
+                  <Input
+                    id="moldFinishingLoss"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="100"
+                    value={lossInputs.moldFinishingLoss}
+                    onChange={(e) =>
+                      handleLossInputChange("moldFinishingLoss", e.target.value)
+                    }
+                    onBlur={() => handleLossBlur("moldFinishingLoss")}
+                    className="h-9"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="productionLoss" className="text-sm font-medium">
+                    Üretim Kayıpları
+                  </Label>
+                  <Input
+                    id="productionLoss"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="100"
+                    value={lossInputs.productionLoss}
+                    onChange={(e) =>
+                      handleLossInputChange("productionLoss", e.target.value)
+                    }
+                    onBlur={() => handleLossBlur("productionLoss")}
+                    className="h-9"
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -261,42 +265,44 @@ export function MaterialSettings({
                 <CardTitle className="text-base font-semibold">Yüzük Grup Fiyat Ayarlamaları (%)</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3 px-4 pb-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="smallGroupDiscount" className="text-sm font-medium">
-                  Küçük Grup İndirimi (10-13 ölçü)
-                </Label>
-                <Input
-                  id="smallGroupDiscount"
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="100"
-                  value={ringGroupPriceInputs.smallGroupDiscount}
-                  onChange={(e) =>
-                    handleRingGroupPriceInputChange("smallGroupDiscount", e.target.value)
-                  }
-                  onBlur={() => handleRingGroupPriceBlur("smallGroupDiscount")}
-                  className="h-9"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="largeGroupSurcharge" className="text-sm font-medium">
-                  Büyük Grup Ek Ücreti (18-20 ölçü)
-                </Label>
-                <Input
-                  id="largeGroupSurcharge"
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="100"
-                  value={ringGroupPriceInputs.largeGroupSurcharge}
-                  onChange={(e) =>
-                    handleRingGroupPriceInputChange("largeGroupSurcharge", e.target.value)
-                  }
-                  onBlur={() => handleRingGroupPriceBlur("largeGroupSurcharge")}
-                  className="h-9"
-                />
+            <CardContent className="px-4 pb-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="smallGroupDiscount" className="text-sm font-medium">
+                    Küçük Grup İndirimi (10-13 ölçü)
+                  </Label>
+                  <Input
+                    id="smallGroupDiscount"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="100"
+                    value={ringGroupPriceInputs.smallGroupDiscount}
+                    onChange={(e) =>
+                      handleRingGroupPriceInputChange("smallGroupDiscount", e.target.value)
+                    }
+                    onBlur={() => handleRingGroupPriceBlur("smallGroupDiscount")}
+                    className="h-9"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="largeGroupSurcharge" className="text-sm font-medium">
+                    Büyük Grup Ek Ücreti (18-20 ölçü)
+                  </Label>
+                  <Input
+                    id="largeGroupSurcharge"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="100"
+                    value={ringGroupPriceInputs.largeGroupSurcharge}
+                    onChange={(e) =>
+                      handleRingGroupPriceInputChange("largeGroupSurcharge", e.target.value)
+                    }
+                    onBlur={() => handleRingGroupPriceBlur("largeGroupSurcharge")}
+                    className="h-9"
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>
