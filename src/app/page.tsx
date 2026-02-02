@@ -26,7 +26,7 @@ export default function Home() {
             </TabsTrigger>
             <TabsTrigger value="ring" className="gap-2">
               <Gem className="h-4 w-4" />
-              Yüzük Hesaplayıcı
+              Varyant Fiyat Hesaplayıcı
             </TabsTrigger>
           </TabsList>
           

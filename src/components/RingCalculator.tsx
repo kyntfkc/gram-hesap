@@ -35,7 +35,7 @@ export function RingCalculator() {
               <Gem className="h-4 w-4" />
             </div>
             <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-              Yüzük Boy Hesaplayıcı
+              Varyant Fiyat Hesaplayıcı
             </CardTitle>
           </div>
         </CardHeader>
@@ -76,67 +76,91 @@ export function RingCalculator() {
 
           {(parseFloat(referenceWeight) > 0 || parseFloat(referencePrice) > 0) && (
             <div className="mt-6">
-              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-4 flex items-center gap-2">
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-3 flex items-center gap-2">
                 <Gem className="h-4 w-4 text-blue-500" />
-                Hesaplanan Yüzük Boyları
+                Hesaplanan Varyantlar
               </h3>
-              <div className="space-y-4">
-                {results.map((group) => (
-                  <div
-                    key={group.groupName}
-                    className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden bg-white dark:bg-slate-800/50"
-                  >
-                    <div className="px-4 py-3 bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800 dark:to-slate-700/50 border-b border-slate-200 dark:border-slate-700">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-slate-50">
-                          {group.groupName} ({group.sizes[0]}-{group.sizes[group.sizes.length - 1]} ölçü)
-                        </h4>
-                        {parseFloat(referencePrice) > 0 && (
-                          <span className="text-xs text-slate-600 dark:text-slate-400">
-                            {group.groupName === "Küçük Grup" && `%${ringGroupPriceSettings.smallGroupDiscount} indirim`}
-                            {group.groupName === "Orta Grup" && "Değişiklik yok"}
-                            {group.groupName === "Büyük Grup" && `%${ringGroupPriceSettings.largeGroupSurcharge} ek ücret`}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div className={`grid ${parseFloat(referencePrice) > 0 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 px-4 py-2 bg-gradient-to-r from-slate-50/50 to-slate-100/30 dark:from-slate-800/30 dark:to-slate-700/20 border-b border-slate-200 dark:border-slate-700`}>
-                      <div className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                        Boy
-                      </div>
-                      <div className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
-                        Gram
-                      </div>
-                      {parseFloat(referencePrice) > 0 && (
-                        <div className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
-                          Fiyat
-                        </div>
-                      )}
-                    </div>
-                    <div className="divide-y divide-slate-200 dark:divide-slate-700">
-                      {group.results.map((result) => (
-                        <div
-                          key={result.size}
-                          className={`grid ${parseFloat(referencePrice) > 0 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 px-4 py-3 transition-all hover:bg-slate-50/50 dark:hover:bg-slate-800/30`}
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-                              {result.size} Numara
-                            </span>
-                          </div>
-                          <div className="text-right text-sm font-bold text-slate-900 dark:text-slate-50">
-                            {result.weight.toFixed(2)} <span className="text-xs font-normal text-slate-500 dark:text-slate-400">g</span>
-                          </div>
+              <div className="space-y-3">
+                {results.map((group, index) => {
+                  const groupColors = {
+                    "Küçük Grup": {
+                      bg: "from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20",
+                      border: "border-emerald-200 dark:border-emerald-800",
+                      header: "bg-gradient-to-r from-emerald-100 to-teal-100 dark:from-emerald-800/40 dark:to-teal-800/40",
+                      text: "text-emerald-700 dark:text-emerald-300",
+                    },
+                    "Orta Grup": {
+                      bg: "from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
+                      border: "border-amber-200 dark:border-amber-800",
+                      header: "bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-800/40 dark:to-yellow-800/40",
+                      text: "text-amber-700 dark:text-amber-300",
+                    },
+                    "Büyük Grup": {
+                      bg: "from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20",
+                      border: "border-rose-200 dark:border-rose-800",
+                      header: "bg-gradient-to-r from-rose-100 to-pink-100 dark:from-rose-800/40 dark:to-pink-800/40",
+                      text: "text-rose-700 dark:text-rose-300",
+                    },
+                  };
+                  const colors = groupColors[group.groupName as keyof typeof groupColors] || groupColors["Orta Grup"];
+                  
+                  return (
+                    <div
+                      key={group.groupName}
+                      className={`rounded-lg border-2 ${colors.border} overflow-hidden bg-gradient-to-br ${colors.bg}`}
+                    >
+                      <div className={`px-3 py-2 ${colors.header} border-b ${colors.border}`}>
+                        <div className="flex items-center justify-between">
+                          <h4 className={`text-xs font-bold ${colors.text}`}>
+                            {group.groupName} ({group.sizes[0]}-{group.sizes[group.sizes.length - 1]} ölçü)
+                          </h4>
                           {parseFloat(referencePrice) > 0 && (
-                            <div className="text-right text-sm font-bold text-slate-900 dark:text-slate-50">
-                              ₺{result.price.toFixed(2)}
-                            </div>
+                            <span className={`text-xs font-semibold ${colors.text}`}>
+                              {group.groupName === "Küçük Grup" && `%${ringGroupPriceSettings.smallGroupDiscount} indirim`}
+                              {group.groupName === "Orta Grup" && "Değişiklik yok"}
+                              {group.groupName === "Büyük Grup" && `%${ringGroupPriceSettings.largeGroupSurcharge} ek ücret`}
+                            </span>
                           )}
                         </div>
-                      ))}
+                      </div>
+                      <div className={`grid ${parseFloat(referencePrice) > 0 ? 'grid-cols-3' : 'grid-cols-2'} gap-3 px-3 py-1.5 bg-white/30 dark:bg-slate-800/20 border-b ${colors.border}`}>
+                        <div className={`text-xs font-bold ${colors.text} uppercase tracking-wider`}>
+                          Boy
+                        </div>
+                        <div className={`text-xs font-bold ${colors.text} uppercase tracking-wider text-right`}>
+                          Gram
+                        </div>
+                        {parseFloat(referencePrice) > 0 && (
+                          <div className={`text-xs font-bold ${colors.text} uppercase tracking-wider text-right`}>
+                            Fiyat
+                          </div>
+                        )}
+                      </div>
+                      <div className={`divide-y ${colors.border}`}>
+                        {group.results.map((result) => (
+                          <div
+                            key={result.size}
+                            className={`grid ${parseFloat(referencePrice) > 0 ? 'grid-cols-3' : 'grid-cols-2'} gap-3 px-3 py-2 transition-all hover:bg-white/50 dark:hover:bg-slate-800/30`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-semibold text-slate-900 dark:text-slate-50">
+                                {result.size} Numara
+                              </span>
+                            </div>
+                            <div className="text-right text-xs font-bold text-slate-900 dark:text-slate-50">
+                              {result.weight.toFixed(2)} <span className="text-xs font-normal text-slate-500 dark:text-slate-400">g</span>
+                            </div>
+                            {parseFloat(referencePrice) > 0 && (
+                              <div className="text-right text-xs font-bold text-slate-900 dark:text-slate-50">
+                                ₺{result.price.toFixed(2)}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
