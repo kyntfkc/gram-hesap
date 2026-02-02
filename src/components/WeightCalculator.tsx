@@ -48,7 +48,7 @@ export function WeightCalculator() {
     defaultValues: {
       volume: undefined as number | undefined,
       materialDensity: defaultMaterial.density,
-      stoneWeight: 0,
+      stoneWeight: undefined as number | undefined,
     },
     mode: "onChange",
   });
@@ -171,6 +171,7 @@ export function WeightCalculator() {
               id="stoneWeight"
               type="number"
               step="0.01"
+              min="0"
               placeholder="Örn: 2.5"
               className="h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all"
               {...register("stoneWeight", { valueAsNumber: true })}
