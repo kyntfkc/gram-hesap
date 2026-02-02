@@ -27,7 +27,7 @@ export function WeightCalculator() {
   const [materials, setMaterials] = useState<Material[]>([]);
   const [lossSettings, setLossSettings] = useState<LossSettings>({ moldFinishingLoss: 0, productionLoss: 0 });
   const [selectedMaterialId, setSelectedMaterialId] = useState<string>(defaultMaterial.id);
-  const [includeMoldFinishing, setIncludeMoldFinishing] = useState<boolean>(true);
+  const [includeMoldFinishing, setIncludeMoldFinishing] = useState<boolean>(false);
   const [includeNecklaceTip, setIncludeNecklaceTip] = useState<boolean>(false);
   const [includeEarringBack, setIncludeEarringBack] = useState<boolean>(false);
 

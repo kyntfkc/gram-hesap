@@ -20,17 +20,24 @@ import {
   saveLossSettings,
   resetLossSettings,
   defaultLossSettings,
+  RingGroupPriceSettings,
+  getRingGroupPriceSettings,
+  saveRingGroupPriceSettings,
+  resetRingGroupPriceSettings,
+  defaultRingGroupPriceSettings,
 } from "@/lib/settings";
 import { Settings } from "lucide-react";
 
 interface MaterialSettingsProps {
   onMaterialsChange: (materials: Material[]) => void;
   onLossSettingsChange: (settings: LossSettings) => void;
+  onRingGroupPriceSettingsChange?: (settings: RingGroupPriceSettings) => void;
 }
 
 export function MaterialSettings({
   onMaterialsChange,
   onLossSettingsChange,
+  onRingGroupPriceSettingsChange,
 }: MaterialSettingsProps) {
   const [materials, setMaterials] = useState<Material[]>(() => getMaterials());
   const [lossSettings, setLossSettings] = useState<LossSettings>(() => getLossSettings());
@@ -38,11 +45,21 @@ export function MaterialSettings({
     moldFinishingLoss: getLossSettings().moldFinishingLoss.toString(),
     productionLoss: getLossSettings().productionLoss.toString(),
   }));
+  const [ringGroupPriceSettings, setRingGroupPriceSettings] = useState<RingGroupPriceSettings>(
+    () => getRingGroupPriceSettings()
+  );
+  const [ringGroupPriceInputs, setRingGroupPriceInputs] = useState<{ [key: string]: string }>(() => ({
+    smallGroupDiscount: getRingGroupPriceSettings().smallGroupDiscount.toString(),
+    largeGroupSurcharge: getRingGroupPriceSettings().largeGroupSurcharge.toString(),
+  }));
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     onMaterialsChange(materials);
     onLossSettingsChange(lossSettings);
+    if (onRingGroupPriceSettingsChange) {
+      onRingGroupPriceSettingsChange(ringGroupPriceSettings);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -84,17 +101,54 @@ export function MaterialSettings({
     }));
   };
 
+  const handleRingGroupPriceInputChange = (key: keyof RingGroupPriceSettings, value: string) => {
+    setRingGroupPriceInputs((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleRingGroupPriceBlur = (key: keyof RingGroupPriceSettings) => {
+    const inputValue = ringGroupPriceInputs[key];
+    const numValue = inputValue === "" || inputValue === "-" ? 0 : parseFloat(inputValue);
+    const finalValue = isNaN(numValue) ? 0 : Math.max(0, Math.min(100, numValue));
+    
+    const updated = {
+      ...ringGroupPriceSettings,
+      [key]: finalValue,
+    };
+    setRingGroupPriceSettings(updated);
+    saveRingGroupPriceSettings(updated);
+    if (onRingGroupPriceSettingsChange) {
+      onRingGroupPriceSettingsChange(updated);
+    }
+    
+    setRingGroupPriceInputs((prev) => ({
+      ...prev,
+      [key]: finalValue.toString(),
+    }));
+  };
+
   const handleReset = () => {
     const resetMat = resetMaterials();
     const resetLoss = resetLossSettings();
+    const resetRingGroupPrice = resetRingGroupPriceSettings();
     setMaterials(resetMat);
     setLossSettings(resetLoss);
     setLossInputs({
       moldFinishingLoss: resetLoss.moldFinishingLoss.toString(),
       productionLoss: resetLoss.productionLoss.toString(),
     });
+    setRingGroupPriceSettings(resetRingGroupPrice);
+    setRingGroupPriceInputs({
+      smallGroupDiscount: resetRingGroupPrice.smallGroupDiscount.toString(),
+      largeGroupSurcharge: resetRingGroupPrice.largeGroupSurcharge.toString(),
+    });
     onMaterialsChange(resetMat);
     onLossSettingsChange(resetLoss);
+    if (onRingGroupPriceSettingsChange) {
+      onRingGroupPriceSettingsChange(resetRingGroupPrice);
+    }
   };
 
   return (
@@ -177,6 +231,50 @@ export function MaterialSettings({
                     handleLossInputChange("productionLoss", e.target.value)
                   }
                   onBlur={() => handleLossBlur("productionLoss")}
+                  className="h-9"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Yüzük Grup Fiyat Ayarlamaları (%)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2.5 pt-0">
+              <div className="space-y-1.5">
+                <Label htmlFor="smallGroupDiscount" className="text-sm font-medium">
+                  Küçük Grup İndirimi (10-13 ölçü)
+                </Label>
+                <Input
+                  id="smallGroupDiscount"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  value={ringGroupPriceInputs.smallGroupDiscount}
+                  onChange={(e) =>
+                    handleRingGroupPriceInputChange("smallGroupDiscount", e.target.value)
+                  }
+                  onBlur={() => handleRingGroupPriceBlur("smallGroupDiscount")}
+                  className="h-9"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="largeGroupSurcharge" className="text-sm font-medium">
+                  Büyük Grup Ek Ücreti (18-20 ölçü)
+                </Label>
+                <Input
+                  id="largeGroupSurcharge"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  value={ringGroupPriceInputs.largeGroupSurcharge}
+                  onChange={(e) =>
+                    handleRingGroupPriceInputChange("largeGroupSurcharge", e.target.value)
+                  }
+                  onBlur={() => handleRingGroupPriceBlur("largeGroupSurcharge")}
                   className="h-9"
                 />
               </div>

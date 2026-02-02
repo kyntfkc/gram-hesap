@@ -38,7 +38,7 @@ export default function Home() {
             <RingCalculator />
           </TabsContent>
         </Tabs>
-      </div>
+        </div>
     </div>
   );
 }

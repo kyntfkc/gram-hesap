@@ -1,18 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Gem, DollarSign } from "lucide-react";
 import { calculateRingWeights, REFERENCE_SIZE } from "@/lib/ringCalculations";
+import { getRingGroupPriceSettings, RingGroupPriceSettings } from "@/lib/settings";
+import { MaterialSettings } from "./MaterialSettings";
 
 export function RingCalculator() {
   const [referenceWeight, setReferenceWeight] = useState<string>("");
   const [referencePrice, setReferencePrice] = useState<string>("");
+  const [ringGroupPriceSettings, setRingGroupPriceSettings] = useState<RingGroupPriceSettings>(
+    getRingGroupPriceSettings()
+  );
+
+  useEffect(() => {
+    setRingGroupPriceSettings(getRingGroupPriceSettings());
+  }, []);
+
   const results = calculateRingWeights(
     parseFloat(referenceWeight) || 0,
-    parseFloat(referencePrice) || 0
+    parseFloat(referencePrice) || 0,
+    ringGroupPriceSettings
   );
 
   return (
@@ -69,42 +80,63 @@ export function RingCalculator() {
                 <Gem className="h-4 w-4 text-blue-500" />
                 Hesaplanan Yüzük Boyları
               </h3>
-              <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden bg-white dark:bg-slate-800/50">
-                <div className={`grid ${parseFloat(referencePrice) > 0 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 px-4 py-3 bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800 dark:to-slate-700/50 border-b border-slate-200 dark:border-slate-700`}>
-                  <div className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    Boy
-                  </div>
-                  <div className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
-                    Gram
-                  </div>
-                  {parseFloat(referencePrice) > 0 && (
-                    <div className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
-                      Fiyat
-                    </div>
-                  )}
-                </div>
-                <div className="divide-y divide-slate-200 dark:divide-slate-700">
-                  {results.map((result) => (
-                    <div
-                      key={result.size}
-                      className={`grid ${parseFloat(referencePrice) > 0 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 px-4 py-3 transition-all hover:bg-slate-50/50 dark:hover:bg-slate-800/30`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-                          {result.size} Numara
-                        </span>
+              <div className="space-y-4">
+                {results.map((group) => (
+                  <div
+                    key={group.groupName}
+                    className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden bg-white dark:bg-slate-800/50"
+                  >
+                    <div className="px-4 py-3 bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800 dark:to-slate-700/50 border-b border-slate-200 dark:border-slate-700">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-slate-50">
+                          {group.groupName} ({group.sizes[0]}-{group.sizes[group.sizes.length - 1]} ölçü)
+                        </h4>
+                        {parseFloat(referencePrice) > 0 && (
+                          <span className="text-xs text-slate-600 dark:text-slate-400">
+                            {group.groupName === "Küçük Grup" && `%${ringGroupPriceSettings.smallGroupDiscount} indirim`}
+                            {group.groupName === "Orta Grup" && "Değişiklik yok"}
+                            {group.groupName === "Büyük Grup" && `%${ringGroupPriceSettings.largeGroupSurcharge} ek ücret`}
+                          </span>
+                        )}
                       </div>
-                      <div className="text-right text-sm font-bold text-slate-900 dark:text-slate-50">
-                        {result.weight.toFixed(2)} <span className="text-xs font-normal text-slate-500 dark:text-slate-400">g</span>
+                    </div>
+                    <div className={`grid ${parseFloat(referencePrice) > 0 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 px-4 py-2 bg-gradient-to-r from-slate-50/50 to-slate-100/30 dark:from-slate-800/30 dark:to-slate-700/20 border-b border-slate-200 dark:border-slate-700`}>
+                      <div className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                        Boy
+                      </div>
+                      <div className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
+                        Gram
                       </div>
                       {parseFloat(referencePrice) > 0 && (
-                        <div className="text-right text-sm font-bold text-slate-900 dark:text-slate-50">
-                          ₺{result.price.toFixed(2)}
+                        <div className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">
+                          Fiyat
                         </div>
                       )}
                     </div>
-                  ))}
-                </div>
+                    <div className="divide-y divide-slate-200 dark:divide-slate-700">
+                      {group.results.map((result) => (
+                        <div
+                          key={result.size}
+                          className={`grid ${parseFloat(referencePrice) > 0 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 px-4 py-3 transition-all hover:bg-slate-50/50 dark:hover:bg-slate-800/30`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                              {result.size} Numara
+                            </span>
+                          </div>
+                          <div className="text-right text-sm font-bold text-slate-900 dark:text-slate-50">
+                            {result.weight.toFixed(2)} <span className="text-xs font-normal text-slate-500 dark:text-slate-400">g</span>
+                          </div>
+                          {parseFloat(referencePrice) > 0 && (
+                            <div className="text-right text-sm font-bold text-slate-900 dark:text-slate-50">
+                              ₺{result.price.toFixed(2)}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -121,6 +153,16 @@ export function RingCalculator() {
           )}
         </CardContent>
       </Card>
+
+      <div className="flex justify-center">
+        <MaterialSettings
+          onMaterialsChange={() => {}}
+          onLossSettingsChange={() => {}}
+          onRingGroupPriceSettingsChange={(settings) => {
+            setRingGroupPriceSettings(settings);
+          }}
+        />
+      </div>
     </div>
   );
 }
