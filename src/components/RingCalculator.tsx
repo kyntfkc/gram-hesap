@@ -74,7 +74,7 @@ export function RingCalculator() {
             </div>
           </div>
 
-          {parseFloat(referenceWeight) > 0 && (
+          {(parseFloat(referenceWeight) > 0 || parseFloat(referencePrice) > 0) && (
             <div className="mt-6">
               <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-4 flex items-center gap-2">
                 <Gem className="h-4 w-4 text-blue-500" />
@@ -141,13 +141,13 @@ export function RingCalculator() {
             </div>
           )}
 
-          {(!referenceWeight || parseFloat(referenceWeight) <= 0) && (
+          {(!referenceWeight || parseFloat(referenceWeight) <= 0) && (!referencePrice || parseFloat(referencePrice) <= 0) && (
             <div className="mt-6 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-center">
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                Referans gram değerini girin, tüm boylar otomatik hesaplanacak
+                Referans gram veya fiyat değerini girin, tüm boylar otomatik hesaplanacak
               </p>
               <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-                İsteğe bağlı olarak referans fiyat da girebilirsiniz
+                Gram veya fiyat değerlerinden en az birini girmeniz gerekiyor
               </p>
             </div>
           )}

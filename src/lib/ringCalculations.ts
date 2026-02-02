@@ -20,7 +20,8 @@ export function calculateRingWeights(
   referencePrice: number = 0,
   priceSettings?: RingGroupPriceSettings
 ): RingGroupResult[] {
-  if (referenceWeight <= 0) {
+  // Eğer ne gram ne de fiyat girilmişse, boş sonuç döndür
+  if (referenceWeight <= 0 && referencePrice <= 0) {
     return [
       {
         groupName: "Küçük Grup",
@@ -64,8 +65,8 @@ export function calculateRingWeights(
   const largeGroupPrice = basePrice > 0 ? basePrice * (1 + largeGroupSurcharge / 100) : 0;
 
   const calculateResult = (size: number, groupPrice: number): RingWeightResult => {
-    // Lineer orantı: (Boy / 16) × Referans Gram
-    const weight = (size / REFERENCE_SIZE) * referenceWeight;
+    // Lineer orantı: (Boy / 16) × Referans Gram (eğer gram girilmişse)
+    const weight = referenceWeight > 0 ? (size / REFERENCE_SIZE) * referenceWeight : 0;
     
     return {
       size,
