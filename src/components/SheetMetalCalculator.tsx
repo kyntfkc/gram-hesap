@@ -43,8 +43,8 @@ export function SheetMetalCalculator() {
       areaMm2: undefined as number | undefined,
       thicknessMm: 0.4,
       complexity: "low",
-      includePendantBail: true,
-      includePendantChain: true,
+      includePendantBail: false,
+      includePendantChain: false,
     },
     mode: "onChange",
   });
@@ -65,8 +65,8 @@ export function SheetMetalCalculator() {
         areaMm2: area,
         thicknessMm: thickness,
         complexity: comp,
-        includePendantBail: includePendantBail ?? true,
-        includePendantChain: includePendantChain ?? true,
+        includePendantBail: includePendantBail ?? false,
+        includePendantChain: includePendantChain ?? false,
       });
       setResult(calculated);
     } else {

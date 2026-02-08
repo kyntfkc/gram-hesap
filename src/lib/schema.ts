@@ -49,8 +49,8 @@ export const sheetMetalSchema = z.object({
   complexity: z.enum(["high", "low"], {
     message: "Detay seviyesi seçin",
   }),
-  includePendantBail: z.boolean().default(true),
-  includePendantChain: z.boolean().default(true),
+  includePendantBail: z.boolean().default(false),
+  includePendantChain: z.boolean().default(false),
 });
 
 export type SheetMetalFormData = z.input<typeof sheetMetalSchema>;

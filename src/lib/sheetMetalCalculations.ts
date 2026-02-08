@@ -40,7 +40,7 @@ function round2(n: number): number {
  * Teorik ham → lazer kerf kaybı → cila/tesviye firesi.
  */
 export function calculateSheetMetal(params: SheetMetalParams): SheetMetalResult {
-  const { areaMm2, thicknessMm, complexity, includePendantBail = true, includePendantChain = true } = params;
+  const { areaMm2, thicknessMm, complexity, includePendantBail = false, includePendantChain = false } = params;
 
   const theoreticalG = (areaMm2 * thicknessMm * DENSITY_14K) / 1000;
   const kerfFactor = complexity === "high" ? KERF_HIGH : KERF_LOW;
