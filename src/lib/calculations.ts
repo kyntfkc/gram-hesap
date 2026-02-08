@@ -5,8 +5,8 @@ export interface CalculationParams {
   moldFinishingLoss: number; // 0-100 (%)
   productionLoss: number; // 0-100 (%)
   stoneWeight: number; // g
-  necklaceTip: boolean; // Kolye tepeliği (0.15 g)
-  earringBack: boolean; // Küpe çivi/kelebek (0.40 g)
+  necklaceTipGrams: number; // Kolye tepeliği (g), 0 = hesaba dahil değil
+  earringBackGrams: number; // Küpe çivi/kelebek (g), 0 = hesaba dahil değil
 }
 
 export interface CalculationResult {
@@ -17,7 +17,7 @@ export interface CalculationResult {
 }
 
 export function calculateWeight(params: CalculationParams): CalculationResult {
-  const { volume, materialDensity, infill, moldFinishingLoss, productionLoss, stoneWeight, necklaceTip, earringBack } = params;
+  const { volume, materialDensity, infill, moldFinishingLoss, productionLoss, stoneWeight, necklaceTipGrams, earringBackGrams } = params;
 
   // Hacim mm³'den cm³'e çevir (1 cm³ = 1000 mm³)
   const volumeCm3 = volume / 1000;
@@ -31,8 +31,8 @@ export function calculateWeight(params: CalculationParams): CalculationResult {
   // 3. Üretim Kayıpları Sonrası = Kalıp Tesviye Sonrası × (1 - Üretim Kayıpları / 100)
   const afterProductionLoss = afterMoldFinishing * (1 - productionLoss / 100);
 
-  // 4. Ekstra ağırlıklar
-  const extraWeight = (necklaceTip ? 0.15 : 0) + (earringBack ? 0.40 : 0);
+  // 4. Ekstra ağırlıklar (ayarlardan gelen gram değerleri)
+  const extraWeight = (necklaceTipGrams || 0) + (earringBackGrams || 0);
 
   // 5. Final Ağırlık = Üretim Kayıpları Sonrası + Taş Ağırlığı + Ekstra Ağırlıklar
   const finalWeight = afterProductionLoss + stoneWeight + extraWeight;

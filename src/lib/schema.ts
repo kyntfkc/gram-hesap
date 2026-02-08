@@ -36,3 +36,21 @@ export const weightCalculatorSchema = z.object({
 });
 
 export type WeightCalculatorFormData = z.infer<typeof weightCalculatorSchema>;
+
+export const sheetMetalSchema = z.object({
+  areaMm2: z
+    .number({ message: "Alan sayı olmalıdır" })
+    .positive({ message: "Alan 0'dan büyük olmalıdır" })
+    .max(100000000, { message: "Alan en fazla 100.000.000 mm² olabilir" }),
+  thicknessMm: z
+    .number({ message: "Kalınlık sayı olmalıdır" })
+    .positive({ message: "Kalınlık 0'dan büyük olmalıdır. Örn: 0.40" })
+    .max(100, { message: "Kalınlık en fazla 100 mm" }),
+  complexity: z.enum(["high", "low"], {
+    message: "Detay seviyesi seçin",
+  }),
+  includePendantBail: z.boolean().default(true),
+  includePendantChain: z.boolean().default(true),
+});
+
+export type SheetMetalFormData = z.infer<typeof sheetMetalSchema>;

@@ -19,7 +19,7 @@ import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/comp
 import { calculateWeight, CalculationParams, CalculationResult } from "@/lib/calculations";
 import { weightCalculatorSchema, WeightCalculatorFormData } from "@/lib/schema";
 import { Material, getMaterials, defaultMaterial } from "@/lib/materials";
-import { LossSettings, getLossSettings } from "@/lib/settings";
+import { LossSettings, getLossSettings, ExtraWeightSettings, getExtraWeightSettings } from "@/lib/settings";
 import { ResultCard } from "./ResultCard";
 import { MaterialSettings } from "./MaterialSettings";
 
@@ -27,6 +27,7 @@ export function WeightCalculator() {
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [materials, setMaterials] = useState<Material[]>([]);
   const [lossSettings, setLossSettings] = useState<LossSettings>({ moldFinishingLoss: 0, productionLoss: 0 });
+  const [extraWeightSettings, setExtraWeightSettings] = useState<ExtraWeightSettings>(getExtraWeightSettings());
   const [selectedMaterialId, setSelectedMaterialId] = useState<string>(defaultMaterial.id);
   const [includeMoldFinishing, setIncludeMoldFinishing] = useState<boolean>(false);
   const [includeNecklaceTip, setIncludeNecklaceTip] = useState<boolean>(false);
@@ -36,6 +37,7 @@ export function WeightCalculator() {
   useEffect(() => {
     setMaterials(getMaterials());
     setLossSettings(getLossSettings());
+    setExtraWeightSettings(getExtraWeightSettings());
   }, []);
 
   const {
@@ -77,8 +79,8 @@ export function WeightCalculator() {
           moldFinishingLoss: includeMoldFinishing ? lossSettings.moldFinishingLoss : 0,
           productionLoss: lossSettings.productionLoss,
           stoneWeight,
-          necklaceTip: includeNecklaceTip,
-          earringBack: includeEarringBack,
+          necklaceTipGrams: includeNecklaceTip ? extraWeightSettings.necklaceTipGrams : 0,
+          earringBackGrams: includeEarringBack ? extraWeightSettings.earringBackGrams : 0,
         };
         const calculated = calculateWeight(params);
         setResult(calculated);
@@ -90,7 +92,7 @@ export function WeightCalculator() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [watchedValues, lossSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack]);
+  }, [watchedValues, lossSettings, extraWeightSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack]);
 
   return (
     <TooltipProvider>
@@ -235,12 +237,12 @@ export function WeightCalculator() {
                       <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
-                      <p>Kolye tepeliği ekleniyorsa açın. +0.15 g ağırlık eklenir.</p>
+                      <p>Kolye tepeliği ekleniyorsa açın. Ayarlardan gram değerini değiştirebilirsiniz.</p>
                     </TooltipContent>
                   </Tooltip>
                   {includeNecklaceTip && (
                     <span className="px-1.5 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">
-                      +0.15 g
+                      +{extraWeightSettings.necklaceTipGrams.toFixed(2)} g
                     </span>
                   )}
                 </div>
@@ -271,12 +273,12 @@ export function WeightCalculator() {
                       <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
-                      <p>Küpe çivi veya kelebek ekleniyorsa açın. +0.40 g ağırlık eklenir.</p>
+                      <p>Küpe çivi veya kelebek ekleniyorsa açın. Ayarlardan gram değerini değiştirebilirsiniz.</p>
                     </TooltipContent>
                   </Tooltip>
                   {includeEarringBack && (
                     <span className="px-1.5 py-0.5 rounded-md bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs font-bold">
-                      +0.40 g
+                      +{extraWeightSettings.earringBackGrams.toFixed(2)} g
                     </span>
                   )}
                 </div>
@@ -331,7 +333,14 @@ export function WeightCalculator() {
       </Card>
 
       <div className="lg:sticky lg:top-4 lg:h-fit">
-        <ResultCard result={result} />
+        <ResultCard
+          result={result}
+          showMoldFinishing={includeMoldFinishing}
+          showNecklaceTip={includeNecklaceTip}
+          showEarringBack={includeEarringBack}
+          necklaceTipGrams={extraWeightSettings.necklaceTipGrams}
+          earringBackGrams={extraWeightSettings.earringBackGrams}
+        />
       </div>
       </div>
 
@@ -339,6 +348,7 @@ export function WeightCalculator() {
         <MaterialSettings
           onMaterialsChange={setMaterials}
           onLossSettingsChange={setLossSettings}
+          onExtraWeightSettingsChange={setExtraWeightSettings}
         />
       </div>
       </div>

@@ -46,51 +46,39 @@ export function resetLossSettings(): LossSettings {
   return defaultLossSettings;
 }
 
-export interface RingGroupPriceSettings {
-  smallGroupDiscount: number; // Küçük grup indirim yüzdesi (0-100)
-  largeGroupSurcharge: number; // Büyük grup ek ücret yüzdesi (0-100)
+export interface ExtraWeightSettings {
+  necklaceTipGrams: number; // Kolye tepeliği (g)
+  earringBackGrams: number; // Küpe çivi/kelebek (g)
 }
 
-export const defaultRingGroupPriceSettings: RingGroupPriceSettings = {
-  smallGroupDiscount: 10,
-  largeGroupSurcharge: 15,
+export const defaultExtraWeightSettings: ExtraWeightSettings = {
+  necklaceTipGrams: 0.15,
+  earringBackGrams: 0.4,
 };
 
-const RING_GROUP_PRICE_SETTINGS_KEY = "ring-group-price-settings";
+const EXTRA_WEIGHT_SETTINGS_KEY = "extra-weight-settings";
 
-export function getRingGroupPriceSettings(): RingGroupPriceSettings {
-  if (typeof window === "undefined") {
-    return defaultRingGroupPriceSettings;
-  }
-
+export function getExtraWeightSettings(): ExtraWeightSettings {
+  if (typeof window === "undefined") return defaultExtraWeightSettings;
   try {
-    const stored = localStorage.getItem(RING_GROUP_PRICE_SETTINGS_KEY);
-    if (stored) {
-      return JSON.parse(stored);
-    }
+    const stored = localStorage.getItem(EXTRA_WEIGHT_SETTINGS_KEY);
+    if (stored) return JSON.parse(stored);
   } catch (error) {
-    console.error("Error loading ring group price settings from localStorage:", error);
+    console.error("Error loading extra weight settings from localStorage:", error);
   }
-
-  return defaultRingGroupPriceSettings;
+  return defaultExtraWeightSettings;
 }
 
-export function saveRingGroupPriceSettings(settings: RingGroupPriceSettings): void {
-  if (typeof window === "undefined") {
-    return;
-  }
-
+export function saveExtraWeightSettings(settings: ExtraWeightSettings): void {
+  if (typeof window === "undefined") return;
   try {
-    localStorage.setItem(RING_GROUP_PRICE_SETTINGS_KEY, JSON.stringify(settings));
+    localStorage.setItem(EXTRA_WEIGHT_SETTINGS_KEY, JSON.stringify(settings));
   } catch (error) {
-    console.error("Error saving ring group price settings to localStorage:", error);
+    console.error("Error saving extra weight settings to localStorage:", error);
   }
 }
 
-export function resetRingGroupPriceSettings(): RingGroupPriceSettings {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem(RING_GROUP_PRICE_SETTINGS_KEY);
-  }
-  return defaultRingGroupPriceSettings;
+export function resetExtraWeightSettings(): ExtraWeightSettings {
+  if (typeof window !== "undefined") localStorage.removeItem(EXTRA_WEIGHT_SETTINGS_KEY);
+  return defaultExtraWeightSettings;
 }
-

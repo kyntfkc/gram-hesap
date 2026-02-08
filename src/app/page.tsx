@@ -1,10 +1,10 @@
 "use client";
 
 import { WeightCalculator } from "@/components/WeightCalculator";
-import { RingCalculator } from "@/components/RingCalculator";
+import { SheetMetalCalculator } from "@/components/SheetMetalCalculator";
 import { Logo } from "@/components/Logo";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calculator, Gem } from "lucide-react";
+import { Calculator, Scissors } from "lucide-react";
 
 export default function Home() {
   return (
@@ -14,31 +14,31 @@ export default function Home() {
         <div className="mb-6 text-center">
           <Logo />
           <p className="mt-2 text-base text-slate-600 dark:text-slate-400 md:text-lg max-w-2xl mx-auto">
-            3D ürünleri ve yüzük boyları için profesyonel ağırlık hesaplama
+            3D ürünler, yüzük boyları ve 2D lazer kesim astar ağırlığı hesaplama
           </p>
         </div>
-        
+
         <Tabs defaultValue="weight" className="w-full">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
             <TabsTrigger value="weight" className="gap-2">
               <Calculator className="h-4 w-4" />
               Ağırlık Hesaplayıcı
             </TabsTrigger>
-            <TabsTrigger value="ring" className="gap-2">
-              <Gem className="h-4 w-4" />
-              Varyant Fiyat Hesaplayıcı
+            <TabsTrigger value="sheet" className="gap-2">
+              <Scissors className="h-4 w-4" />
+              2D Lazer Kesim
             </TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="weight" className="mt-0">
             <WeightCalculator />
           </TabsContent>
-          
-          <TabsContent value="ring" className="mt-0">
-            <RingCalculator />
+
+          <TabsContent value="sheet" className="mt-0">
+            <SheetMetalCalculator />
           </TabsContent>
         </Tabs>
-        </div>
+      </div>
     </div>
   );
 }
