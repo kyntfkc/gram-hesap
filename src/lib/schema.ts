@@ -53,4 +53,4 @@ export const sheetMetalSchema = z.object({
   includePendantChain: z.boolean().default(true),
 });
 
-export type SheetMetalFormData = z.infer<typeof sheetMetalSchema>;
+export type SheetMetalFormData = z.input<typeof sheetMetalSchema>;
