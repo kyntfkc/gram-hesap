@@ -13,10 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calculator, Ruler, Gem, Settings2, Link, HelpCircle } from "lucide-react";
+import { Calculator, Ruler, Gem, Settings2, Link, HelpCircle, CircleDot } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { calculateWeight, CalculationParams, CalculationResult } from "@/lib/calculations";
+import { calculateWeight, CalculationParams, CalculationResult, RING_CONE_DEDUCTION_G } from "@/lib/calculations";
 import { weightCalculatorSchema, WeightCalculatorFormData } from "@/lib/schema";
 import { Material, getMaterials, defaultMaterial } from "@/lib/materials";
 import { LossSettings, getLossSettings, ExtraWeightSettings, getExtraWeightSettings } from "@/lib/settings";
@@ -32,6 +32,7 @@ export function WeightCalculator() {
   const [includeMoldFinishing, setIncludeMoldFinishing] = useState<boolean>(false);
   const [includeNecklaceTip, setIncludeNecklaceTip] = useState<boolean>(false);
   const [includeEarringBack, setIncludeEarringBack] = useState<boolean>(false);
+  const [includeRingCone, setIncludeRingCone] = useState<boolean>(false);
 
   // Client-side'da localStorage'dan yükle
   useEffect(() => {
@@ -81,6 +82,7 @@ export function WeightCalculator() {
           stoneWeight,
           necklaceTipGrams: includeNecklaceTip ? extraWeightSettings.necklaceTipGrams : 0,
           earringBackGrams: includeEarringBack ? extraWeightSettings.earringBackGrams : 0,
+          ringConeDeductionG: includeRingCone ? RING_CONE_DEDUCTION_G : 0,
         };
         const calculated = calculateWeight(params);
         setResult(calculated);
@@ -92,7 +94,7 @@ export function WeightCalculator() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [watchedValues, lossSettings, extraWeightSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack]);
+  }, [watchedValues, lossSettings, extraWeightSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack, includeRingCone]);
 
   return (
     <TooltipProvider>
@@ -291,6 +293,42 @@ export function WeightCalculator() {
               id="earringBack"
               checked={includeEarringBack}
               onCheckedChange={setIncludeEarringBack}
+            />
+          </div>
+
+          <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+                <CircleDot className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="ringCone" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                    Yüzük Koçanı
+                  </Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>Açıksa final ağırlıktan 0,06 g düşülür (yüzük koçanı boşluğu).</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  {includeRingCone && (
+                    <span className="px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold">
+                      −{RING_CONE_DEDUCTION_G.toFixed(2)} g
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  {includeRingCone ? "Hesaba dahil" : "Hesaba dahil değil"}
+                </p>
+              </div>
+            </div>
+            <Switch
+              id="ringCone"
+              checked={includeRingCone}
+              onCheckedChange={setIncludeRingCone}
             />
           </div>
 
