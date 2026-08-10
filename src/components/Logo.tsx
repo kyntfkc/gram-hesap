@@ -6,9 +6,9 @@ export function Logo() {
       <Image
         src="/logo-indigo.png"
         alt="indigo"
-        width={160}
-        height={72}
-        className="h-9 w-auto md:h-10"
+        width={208}
+        height={94}
+        className="h-[2.925rem] w-auto md:h-[3.25rem]"
         priority
       />
     </div>
