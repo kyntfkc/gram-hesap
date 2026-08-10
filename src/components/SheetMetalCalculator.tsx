@@ -17,7 +17,7 @@ import { Ruler, Layers, HelpCircle, Scale, Sparkles, CheckCircle2, Link2, Link }
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { calculateSheetMetal, calculateAreaFromWeight, SheetMetalResult, PENDANT_BAIL_WEIGHT_G, PENDANT_CHAIN_WEIGHT_G, BRACELET_CHAIN_WEIGHT_G, getMaterialFactors } from "@/lib/sheetMetalCalculations";
+import { calculateSheetMetal, calculateAreaFromWeight, SheetMetalResult, PENDANT_BAIL_WEIGHT_G, BRACELET_CHAIN_WEIGHT_G, getMaterialFactors } from "@/lib/sheetMetalCalculations";
 import { sheetMetalSchema, SheetMetalFormData } from "@/lib/schema";
 import { Material, getMaterials, defaultMaterial } from "@/lib/materials";
 import { LossSettings, getLossSettings } from "@/lib/settings";
@@ -51,7 +51,6 @@ export function SheetMetalCalculator() {
       thicknessMm: 0.4,
       selectedMaterialId: "14k-gold",
       includePendantBail: false,
-      includePendantChain: false,
       includeBraceletChain: false,
     },
     mode: "onChange",
@@ -62,7 +61,6 @@ export function SheetMetalCalculator() {
   const thicknessMm = watch("thicknessMm");
   const selectedMaterialId = watch("selectedMaterialId");
   const includePendantBail = watch("includePendantBail");
-  const includePendantChain = watch("includePendantChain");
   const includeBraceletChain = watch("includeBraceletChain");
 
   const selectedMaterial = materials.find((m) => m.id === selectedMaterialId) ?? materials[0];
@@ -85,7 +83,6 @@ export function SheetMetalCalculator() {
       materialDensity: density,
       materialId: matId,
       includePendantBail: includePendantBail ?? false,
-      includePendantChain: includePendantChain ?? false,
       includeBraceletChain: includeBraceletChain ?? false,
     };
 
@@ -123,7 +120,7 @@ export function SheetMetalCalculator() {
         setAreaResult(null);
       }
     }
-  }, [areaMm2, targetGramG, thicknessMm, selectedMaterialId, selectedMaterial, includePendantBail, includePendantChain, includeBraceletChain, calcMode]);
+  }, [areaMm2, targetGramG, thicknessMm, selectedMaterialId, selectedMaterial, includePendantBail, includeBraceletChain, calcMode]);
 
   return (
     <TooltipProvider>
@@ -330,49 +327,6 @@ export function SheetMetalCalculator() {
                     <Link className="h-4 w-4" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Kolye Zinciri</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      {includePendantChain ? "Hesaba dahil" : "Hesaba dahil değil"}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          type="button"
-                          className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200/80 dark:bg-slate-600/80 text-slate-500 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors"
-                        >
-                          <HelpCircle className="h-3.5 w-3.5" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-xs">
-                        <p>Kolye zinciri ağırlığı hesaba eklenir. Açıksa +1,05 g eklenir.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <span className="rounded-md bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
-                      +1.05 g
-                    </span>
-                    <Controller
-                      name="includePendantChain"
-                      control={control}
-                      render={({ field }) => (
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          aria-label="Kolye zinciri hesaba dahil"
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 p-3 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400">
-                    <Link className="h-4 w-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Bileklik Zinciri</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       {includeBraceletChain ? "Hesaba dahil" : "Hesaba dahil değil"}
@@ -481,17 +435,6 @@ export function SheetMetalCalculator() {
                           <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Kolye Tepeliği</span>
                         </div>
                         <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">+{formatGram(PENDANT_BAIL_WEIGHT_G)} g</span>
-                      </div>
-                    )}
-                    {includePendantChain && (
-                      <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
-                        <div className="flex items-center gap-2">
-                          <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
-                            <Link className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                          </div>
-                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Kolye Zinciri</span>
-                        </div>
-                        <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">+{formatGram(PENDANT_CHAIN_WEIGHT_G)} g</span>
                       </div>
                     )}
                     {includeBraceletChain && (

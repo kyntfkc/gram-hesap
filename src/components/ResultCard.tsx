@@ -17,13 +17,16 @@ interface ResultCardProps {
   showEarringBack?: boolean;
   /** Sol taraftaki "Bileklik Zinciri" toggle açıksa sağda gösterilir */
   showBraceletChain?: boolean;
+  /** Sol taraftaki "Kolye Zinciri" toggle açıksa sağda gösterilir */
+  showPendantChain?: boolean;
   /** Ayarlardan gelen gram değerleri (gösterim için) */
   necklaceTipGrams?: number;
   earringBackGrams?: number;
   braceletChainGrams?: number;
+  pendantChainGrams?: number;
 }
 
-export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFinishing = false, showNecklaceTip = false, showEarringBack = false, showBraceletChain = false, necklaceTipGrams = 0.12, earringBackGrams = 0.4, braceletChainGrams = 0.75 }: ResultCardProps) {
+export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFinishing = false, showNecklaceTip = false, showEarringBack = false, showBraceletChain = false, showPendantChain = false, necklaceTipGrams = 0.12, earringBackGrams = 0.4, braceletChainGrams = 0.75, pendantChainGrams = 1.05 }: ResultCardProps) {
   if (!result) {
     return (
       <Card className="w-full border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm">
@@ -119,6 +122,18 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Bileklik Zinciri</span>
               </div>
               <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(braceletChainGrams)} g</span>
+            </div>
+          )}
+
+          {showPendantChain && (
+            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+                  <Link className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Kolye Zinciri</span>
+              </div>
+              <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(pendantChainGrams)} g</span>
             </div>
           )}
         </div>

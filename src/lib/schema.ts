@@ -59,7 +59,6 @@ export const sheetMetalSchema = z.object({
     .max(100, { message: "Kalınlık en fazla 100 mm" }),
   selectedMaterialId: z.string().default("14k-gold"),
   includePendantBail: z.boolean().default(false),
-  includePendantChain: z.boolean().default(false),
   includeBraceletChain: z.boolean().default(false),
 });
 

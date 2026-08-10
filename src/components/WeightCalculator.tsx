@@ -13,11 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calculator, Ruler, Gem, Settings2, Link, HelpCircle, CircleDot, Scale } from "lucide-react";
+import { Calculator, Ruler, Gem, Settings2, Link, HelpCircle, Scale } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { calculateWeight, calculateVolumeFromWeight, CalculationParams, CalculationResult, RING_CONE_DEDUCTION_G } from "@/lib/calculations";
+import { calculateWeight, calculateVolumeFromWeight, CalculationParams, CalculationResult } from "@/lib/calculations";
+import { PENDANT_CHAIN_WEIGHT_G } from "@/lib/sheetMetalCalculations";
 import { weightCalculatorSchema, WeightCalculatorFormData } from "@/lib/schema";
 import { Material, getMaterials, defaultMaterial } from "@/lib/materials";
 import { LossSettings, getLossSettings, ExtraWeightSettings, getExtraWeightSettings } from "@/lib/settings";
@@ -37,7 +38,7 @@ export function WeightCalculator() {
   const [includeNecklaceTip, setIncludeNecklaceTip] = useState<boolean>(false);
   const [includeEarringBack, setIncludeEarringBack] = useState<boolean>(false);
   const [includeBraceletChain, setIncludeBraceletChain] = useState<boolean>(false);
-  const [includeRingCone, setIncludeRingCone] = useState<boolean>(false);
+  const [includePendantChain, setIncludePendantChain] = useState<boolean>(false);
 
   // Client-side'da localStorage'dan yükle
   useEffect(() => {
@@ -86,7 +87,7 @@ export function WeightCalculator() {
         necklaceTipGrams: includeNecklaceTip ? extraWeightSettings.necklaceTipGrams : 0,
         earringBackGrams: includeEarringBack ? extraWeightSettings.earringBackGrams : 0,
         braceletChainGrams: includeBraceletChain ? extraWeightSettings.braceletChainGrams : 0,
-        ringConeDeductionG: includeRingCone ? RING_CONE_DEDUCTION_G : 0,
+        pendantChainGrams: includePendantChain ? PENDANT_CHAIN_WEIGHT_G : 0,
       };
 
       if (calcMode === "gram-to-volume") {
@@ -126,7 +127,7 @@ export function WeightCalculator() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [watchedValues, lossSettings, extraWeightSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack, includeBraceletChain, includeRingCone, calcMode]);
+  }, [watchedValues, lossSettings, extraWeightSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack, includeBraceletChain, includePendantChain, calcMode]);
 
   return (
     <TooltipProvider>
@@ -422,37 +423,37 @@ export function WeightCalculator() {
 
           <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
-                <CircleDot className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              <div className="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+                <Link className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="ringCone" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                    Yüzük Koçanı
+                  <Label htmlFor="pendantChain" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                    Kolye Zinciri
                   </Label>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
-                      <p>Açıksa final ağırlıktan 0,06 g düşülür (yüzük koçanı boşluğu).</p>
+                      <p>Kolye zinciri ekleniyorsa açın. Açıksa +{PENDANT_CHAIN_WEIGHT_G.toFixed(2).replace(".", ",")} g eklenir.</p>
                     </TooltipContent>
                   </Tooltip>
-                  {includeRingCone && (
-                    <span className="px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold">
-                      −{RING_CONE_DEDUCTION_G.toFixed(2)} g
+                  {includePendantChain && (
+                    <span className="px-1.5 py-0.5 rounded-md bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-xs font-bold">
+                      +{PENDANT_CHAIN_WEIGHT_G.toFixed(2)} g
                     </span>
                   )}
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  {includeRingCone ? "Hesaba dahil" : "Hesaba dahil değil"}
+                  {includePendantChain ? "Hesaba dahil" : "Hesaba dahil değil"}
                 </p>
               </div>
             </div>
             <Switch
-              id="ringCone"
-              checked={includeRingCone}
-              onCheckedChange={setIncludeRingCone}
+              id="pendantChain"
+              checked={includePendantChain}
+              onCheckedChange={setIncludePendantChain}
             />
           </div>
 
@@ -506,6 +507,8 @@ export function WeightCalculator() {
           earringBackGrams={extraWeightSettings.earringBackGrams}
           showBraceletChain={includeBraceletChain}
           braceletChainGrams={extraWeightSettings.braceletChainGrams}
+          showPendantChain={includePendantChain}
+          pendantChainGrams={PENDANT_CHAIN_WEIGHT_G}
         />
       </div>
       </div>
