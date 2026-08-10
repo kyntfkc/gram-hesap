@@ -160,7 +160,7 @@ export function WeightCalculator() {
               onClick={() => setCalcMode("gram-to-volume")}
             >
               <Scale className="h-3.5 w-3.5 mr-1" />
-              Gram → Hacim
+              Gram
             </Button>
             <Button
               type="button"
@@ -170,7 +170,7 @@ export function WeightCalculator() {
               onClick={() => setCalcMode("volume-to-gram")}
             >
               <Ruler className="h-3.5 w-3.5 mr-1" />
-              Hacim → Gram
+              Hacim
             </Button>
           </div>
 

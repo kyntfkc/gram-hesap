@@ -152,7 +152,7 @@ export function SheetMetalCalculator() {
                   onClick={() => setCalcMode("gram-to-area")}
                 >
                   <Scale className="h-3.5 w-3.5 mr-1" />
-                  Gram → Alan
+                  Gram
                 </Button>
                 <Button
                   type="button"
@@ -162,7 +162,7 @@ export function SheetMetalCalculator() {
                   onClick={() => setCalcMode("area-to-gram")}
                 >
                   <Ruler className="h-3.5 w-3.5 mr-1" />
-                  Alan → Gram
+                  Alan
                 </Button>
               </div>
 
