@@ -121,9 +121,17 @@
   }
   html {
     scrollbar-gutter: stable;
+    height: 100%;
   }
   body {
     @apply bg-background text-foreground;
+    height: 100%;
+  }
+  @media (min-width: 1024px) {
+    html,
+    body {
+      overflow: hidden;
+    }
   }
 }
 
