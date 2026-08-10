@@ -2,54 +2,37 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalculationResult } from "@/lib/calculations";
 import { formatInt, formatGram } from "@/lib/copyDimensions";
 import { CopyDimensionButton } from "@/components/CopyDimensionButton";
-import { TrendingUp, Scale, CheckCircle2, Ruler } from "lucide-react";
+import { TrendingUp, Scale, Sparkles, CheckCircle2, Link, Gem, Ruler } from "lucide-react";
 
 interface ResultCardProps {
   result: CalculationResult | null;
+  /** Gram → Hacim modunda hesaplanan hacim */
   volumeMm3?: number;
   reverseMode?: boolean;
+  /** Sol taraftaki "Kalıp Tesviye Kayıpları" toggle açıksa sağda bu satır gösterilir */
   showMoldFinishing?: boolean;
+  /** Sol taraftaki "Kolye Tepeliği" toggle açıksa sağda gösterilir */
   showNecklaceTip?: boolean;
+  /** Sol taraftaki "Küpe Çivi/Kelebek" toggle açıksa sağda gösterilir */
   showEarringBack?: boolean;
+  /** Sol taraftaki "Bileklik Zinciri" toggle açıksa sağda gösterilir */
   showBraceletChain?: boolean;
+  /** Sol taraftaki "Kolye Zinciri" toggle açıksa sağda gösterilir */
   showPendantChain?: boolean;
+  /** Ayarlardan gelen gram değerleri (gösterim için) */
   necklaceTipGrams?: number;
   earringBackGrams?: number;
   braceletChainGrams?: number;
   pendantChainGrams?: number;
 }
 
-function Row({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
-  return (
-    <div className="flex items-center justify-between rounded-lg border border-slate-200/50 bg-slate-50/80 px-2.5 py-1.5 dark:border-slate-700/50 dark:bg-slate-800/40">
-      <span className="text-xs font-medium text-slate-600 dark:text-slate-300">{label}</span>
-      <span className={`text-sm font-bold tabular-nums ${accent ? "text-emerald-600 dark:text-emerald-400" : "text-slate-900 dark:text-slate-50"}`}>
-        {value}
-      </span>
-    </div>
-  );
-}
-
-export function ResultCard({
-  result,
-  volumeMm3,
-  reverseMode = false,
-  showMoldFinishing = false,
-  showNecklaceTip = false,
-  showEarringBack = false,
-  showBraceletChain = false,
-  showPendantChain = false,
-  necklaceTipGrams = 0.12,
-  earringBackGrams = 0.4,
-  braceletChainGrams = 0.75,
-  pendantChainGrams = 1.05,
-}: ResultCardProps) {
+export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFinishing = false, showNecklaceTip = false, showEarringBack = false, showBraceletChain = false, showPendantChain = false, necklaceTipGrams = 0.12, earringBackGrams = 0.4, braceletChainGrams = 0.75, pendantChainGrams = 1.05 }: ResultCardProps) {
   if (!result) {
     return (
-      <Card className="flex h-full min-h-[180px] items-center justify-center border-2 border-dashed border-slate-200 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-900/50">
-        <CardContent className="py-6">
-          <div className="flex flex-col items-center justify-center space-y-2 text-center">
-            <div className="rounded-full bg-slate-100 p-2 dark:bg-slate-800">
+      <Card className="w-full border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm">
+        <CardContent className="pt-6 pb-6">
+          <div className="flex flex-col items-center justify-center text-center space-y-2">
+            <div className="p-2 rounded-full bg-slate-100 dark:bg-slate-800">
               <Scale className="h-5 w-5 text-slate-400" />
             </div>
             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
@@ -62,43 +45,120 @@ export function ResultCard({
   }
 
   return (
-    <Card className="overflow-hidden border-0 bg-gradient-to-br from-white to-slate-50/50 shadow-xl backdrop-blur-xl dark:from-slate-900 dark:to-slate-800/50">
-      <CardHeader className="border-b border-slate-200/50 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 px-3 py-2 dark:border-slate-700/50">
+    <Card className="w-full border-0 shadow-2xl bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900 dark:to-slate-800/50 backdrop-blur-xl overflow-hidden animate-in fade-in duration-200">
+      <CardHeader className="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-b border-slate-200/50 dark:border-slate-700/50 py-3">
         <div className="flex items-center gap-2">
-          <div className="rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 p-1 text-white">
-            <TrendingUp className="h-3.5 w-3.5" />
+          <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
+            <TrendingUp className="h-4 w-4" />
           </div>
-          <CardTitle className="text-sm font-bold text-slate-900 dark:text-slate-50">Sonuçlar</CardTitle>
+          <CardTitle className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-300 bg-clip-text text-transparent">
+            Hesaplama Sonuçları
+          </CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="space-y-1.5 p-3">
-        <Row label="Temel Ağırlık" value={`${formatGram(result.baseWeight)} g`} />
-        {showMoldFinishing && (
-          <Row label="Kalıp Tesviye Sonrası" value={`${formatGram(result.afterMoldFinishing)} g`} />
-        )}
-        <Row label="Üretim Kayıpları Sonrası" value={`${formatGram(result.afterProductionLoss)} g`} />
-        {showNecklaceTip && <Row label="Kolye Tepeliği" value={`+${formatGram(necklaceTipGrams)} g`} accent />}
-        {showPendantChain && <Row label="Kolye Zinciri" value={`+${formatGram(pendantChainGrams)} g`} accent />}
-        {showBraceletChain && <Row label="Bileklik Zinciri" value={`+${formatGram(braceletChainGrams)} g`} accent />}
-        {showEarringBack && <Row label="Küpe Çivi/Kelebek" value={`+${formatGram(earringBackGrams)} g`} accent />}
-
-        <div className="mt-1 flex items-center justify-between rounded-xl border-2 border-blue-200/50 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 px-3 py-2.5 dark:border-blue-800/50">
-          <div className="flex items-center gap-2">
-            <div className="rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 text-white">
-              {reverseMode ? <Ruler className="h-3.5 w-3.5" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+      <CardContent className="space-y-3 p-4">
+        <div className="grid gap-2">
+          <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                <Scale className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Temel Ağırlık</span>
             </div>
-            <span className="text-sm font-bold text-slate-900 dark:text-slate-50">
-              {reverseMode ? "Gerekli Hacim" : "Final Ağırlık"}
+            <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.baseWeight)} g</span>
+          </div>
+          
+          {showMoldFinishing && (
+          <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+                <Sparkles className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Kalıp Tesviye Sonrası</span>
+            </div>
+            <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.afterMoldFinishing)} g</span>
+          </div>
+          )}
+          
+          <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+                <Sparkles className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+              </div>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Üretim Kayıpları Sonrası</span>
+            </div>
+            <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.afterProductionLoss)} g</span>
+          </div>
+
+          {showNecklaceTip && (
+            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                  <Link className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Kolye Tepeliği</span>
+              </div>
+              <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(necklaceTipGrams)} g</span>
+            </div>
+          )}
+
+          {showPendantChain && (
+            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+                  <Link className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Kolye Zinciri</span>
+              </div>
+              <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(pendantChainGrams)} g</span>
+            </div>
+          )}
+
+          {showBraceletChain && (
+            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+                  <Link className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Bileklik Zinciri</span>
+              </div>
+              <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(braceletChainGrams)} g</span>
+            </div>
+          )}
+
+          {showEarringBack && (
+            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+                  <Gem className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Küpe Çivi/Kelebek</span>
+              </div>
+              <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(earringBackGrams)} g</span>
+            </div>
+          )}
+        </div>
+        
+        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+          <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-200/50 dark:border-blue-800/50 shadow-lg">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
+                {reverseMode ? <Ruler className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}
+              </div>
+              <span className="text-lg font-bold text-slate-900 dark:text-slate-50">
+                {reverseMode ? "Gerekli Hacim" : "Final Ağırlık"}
+              </span>
+            </div>
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              {reverseMode && volumeMm3 != null
+                ? `${formatInt(volumeMm3)} mm³`
+                : `${formatGram(result.finalWeight)} g`}
             </span>
           </div>
-          <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-xl font-bold tabular-nums text-transparent dark:from-blue-400 dark:to-indigo-400">
-            {reverseMode && volumeMm3 != null
-              ? `${formatInt(volumeMm3)} mm³`
-              : `${formatGram(result.finalWeight)} g`}
-          </span>
+          <CopyDimensionButton type="volume" />
         </div>
-        <CopyDimensionButton type="volume" />
       </CardContent>
     </Card>
   );
 }
+

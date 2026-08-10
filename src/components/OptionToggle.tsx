@@ -46,23 +46,23 @@ export function OptionToggle({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 px-2.5 py-1.5 transition-colors",
+        "flex items-center gap-3 px-3 py-2.5 transition-colors",
         checked && "bg-slate-50/80 dark:bg-slate-800/40"
       )}
     >
-      <div className={cn("flex h-6 w-6 shrink-0 items-center justify-center rounded-md", toneMap[iconTone])}>
+      <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", toneMap[iconTone])}>
         {icon}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1">
-          <Label htmlFor={id} className="cursor-pointer text-xs font-medium text-slate-800 dark:text-slate-100">
+        <div className="flex items-center gap-1.5">
+          <Label htmlFor={id} className="cursor-pointer text-sm font-medium text-slate-800 dark:text-slate-100">
             {label}
           </Label>
           {tooltip && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <button type="button" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
-                  <HelpCircle className="h-3 w-3" />
+                  <HelpCircle className="h-3.5 w-3.5" />
                 </button>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
@@ -74,29 +74,33 @@ export function OptionToggle({
       </div>
       <span
         className={cn(
-          "shrink-0 rounded px-1.5 py-0.5 text-[10px] font-semibold tabular-nums",
+          "shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-semibold tabular-nums",
           checked ? badgeToneMap[iconTone] : "bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500"
         )}
       >
         {badge}
       </span>
-      <Switch id={id} checked={checked} onCheckedChange={onCheckedChange} aria-label={label} className="scale-90" />
+      <Switch id={id} checked={checked} onCheckedChange={onCheckedChange} aria-label={label} />
     </div>
   );
 }
 
 interface OptionGroupProps {
   title: string;
+  hint?: string;
   children: React.ReactNode;
 }
 
-export function OptionGroup({ title, children }: OptionGroupProps) {
+export function OptionGroup({ title, hint, children }: OptionGroupProps) {
   return (
-    <div className="space-y-1">
-      <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-        {title}
-      </p>
-      <div className="overflow-hidden rounded-lg border border-slate-200/80 dark:border-slate-700/80 divide-y divide-slate-100 dark:divide-slate-800 bg-white/60 dark:bg-slate-900/40">
+    <div className="space-y-2">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          {title}
+        </p>
+        {hint && <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{hint}</p>}
+      </div>
+      <div className="overflow-hidden rounded-xl border border-slate-200/80 dark:border-slate-700/80 divide-y divide-slate-100 dark:divide-slate-800 bg-white/60 dark:bg-slate-900/40">
         {children}
       </div>
     </div>

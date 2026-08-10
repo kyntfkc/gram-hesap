@@ -137,8 +137,8 @@ export function MaterialSettings({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-xs border-slate-200 dark:border-slate-700">
-          <Settings className="h-3.5 w-3.5" />
+        <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all shadow-sm hover:shadow-md">
+          <Settings className="h-4 w-4" />
           Ayarlar
         </Button>
       </DialogTrigger>

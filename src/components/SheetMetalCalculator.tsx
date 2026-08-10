@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Ruler, Layers, HelpCircle, Scale, CheckCircle2, Link2, Link } from "lucide-react";
+import { Ruler, Layers, HelpCircle, Scale, Sparkles, CheckCircle2, Link2, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { calculateSheetMetal, calculateAreaFromWeight, SheetMetalResult, PENDANT_BAIL_WEIGHT_G, BRACELET_CHAIN_WEIGHT_G, getMaterialFactors } from "@/lib/sheetMetalCalculations";
@@ -124,134 +124,161 @@ export function SheetMetalCalculator() {
 
   return (
     <TooltipProvider>
-      <div className="flex h-full min-h-0 w-full flex-col">
-        <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-2">
-          <Card className="min-h-0 border-0 bg-white/80 shadow-xl backdrop-blur-xl dark:bg-slate-900/80">
-            <CardContent className="space-y-2.5 p-3">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <div className="rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 p-1 text-white">
-                    <Layers className="h-3.5 w-3.5" />
-                  </div>
-                  <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-50">Parametreler</h2>
+      <div className="w-full max-w-6xl mx-auto space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
+            <CardContent className="space-y-5 p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                  <Layers className="h-4 w-4" />
                 </div>
-                <MaterialSettings
-                  onMaterialsChange={setMaterials}
-                  onLossSettingsChange={setLossSettings}
-                />
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                  Parametreler
+                </h2>
               </div>
 
-              <div className="flex gap-1 rounded-lg bg-slate-100 p-0.5 dark:bg-slate-800">
+              <div className="flex gap-2 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
                 <Button
                   type="button"
                   variant={calcMode === "gram-to-area" ? "default" : "ghost"}
                   size="sm"
-                  className="h-7 flex-1 text-[11px]"
+                  className="flex-1 h-8 text-xs"
                   onClick={() => setCalcMode("gram-to-area")}
                 >
-                  <Scale className="mr-1 h-3 w-3" />
+                  <Scale className="h-3.5 w-3.5 mr-1" />
                   Gram → Alan
                 </Button>
                 <Button
                   type="button"
                   variant={calcMode === "area-to-gram" ? "default" : "ghost"}
                   size="sm"
-                  className="h-7 flex-1 text-[11px]"
+                  className="flex-1 h-8 text-xs"
                   onClick={() => setCalcMode("area-to-gram")}
                 >
-                  <Ruler className="mr-1 h-3 w-3" />
+                  <Ruler className="h-3.5 w-3.5 mr-1" />
                   Alan → Gram
                 </Button>
               </div>
 
               {calcMode === "gram-to-area" ? (
-                <div className="space-y-1">
-                  <Label htmlFor="targetGramG" className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300">
-                    <Scale className="h-3 w-3 text-slate-500" />
-                    Hedef Final Ağırlık (g) <span className="text-red-500">*</span>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <HelpCircle className="h-3 w-3 cursor-help text-slate-400" />
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-xs">
-                        <p>Bitmiş ürünün hedef ağırlığını girin. Tepelik ve zincir dahil toplam gram.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </Label>
-                  <Input
-                    id="targetGramG"
-                    type="number"
-                    step="0.01"
-                    placeholder="Örn: 0.65"
-                    className={`h-8 text-sm ${errors.targetGramG ? "border-red-300" : ""}`}
-                    {...register("targetGramG", { valueAsNumber: true })}
-                  />
-                </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="targetGramG" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                  <Scale className="h-3.5 w-3.5 text-slate-500" />
+                  Hedef Final Ağırlık (g) <span className="text-red-500">*</span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>Bitmiş ürünün hedef ağırlığını girin. Tepelik ve zincir dahil toplam gram.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </Label>
+                <Input
+                  id="targetGramG"
+                  type="number"
+                  step="0.01"
+                  placeholder="Örn: 0.65"
+                  className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                    errors.targetGramG ? "border-red-300 dark:border-red-700" : ""
+                  }`}
+                  {...register("targetGramG", { valueAsNumber: true })}
+                />
+                {errors.targetGramG && (
+                  <p className="text-sm text-red-500 font-medium flex items-center gap-1">
+                    <span className="text-red-500">⚠</span>
+                    {errors.targetGramG.message}
+                  </p>
+                )}
+              </div>
               ) : (
-                <div className="space-y-1">
-                  <Label htmlFor="areaMm2" className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300">
-                    <Ruler className="h-3 w-3 text-slate-500" />
-                    Alan (mm²) <span className="text-red-500">*</span>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <HelpCircle className="h-3 w-3 cursor-help text-slate-400" />
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-xs">
-                        <p>Kesim parçasının alanı milimetrekare cinsinden.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </Label>
-                  <Input
-                    id="areaMm2"
-                    type="number"
-                    step="0.0001"
-                    placeholder="Örn: 68.6471"
-                    className={`h-8 text-sm ${errors.areaMm2 ? "border-red-300" : ""}`}
-                    {...register("areaMm2", { valueAsNumber: true })}
-                  />
-                </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="areaMm2" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                  <Ruler className="h-3.5 w-3.5 text-slate-500" />
+                  Alan (mm²) <span className="text-red-500">*</span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>Kesim parçasının alanı milimetrekare (square millimeters) cinsinden. Örn: 68.6471</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </Label>
+                <Input
+                  id="areaMm2"
+                  type="number"
+                  step="0.0001"
+                  placeholder="Örn: 68.6471"
+                  className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                    errors.areaMm2 ? "border-red-300 dark:border-red-700" : ""
+                  }`}
+                  {...register("areaMm2", { valueAsNumber: true })}
+                />
+                {errors.areaMm2 && (
+                  <p className="text-sm text-red-500 font-medium flex items-center gap-1">
+                    <span className="text-red-500">⚠</span>
+                    {errors.areaMm2.message}
+                  </p>
+                )}
+              </div>
               )}
 
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-1">
-                  <Label htmlFor="thicknessMm" className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300">
-                    <Layers className="h-3 w-3 text-slate-500" />
-                    Kalınlık (mm) <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    id="thicknessMm"
-                    type="number"
-                    step="0.01"
-                    placeholder="0.40"
-                    className={`h-8 text-sm ${errors.thicknessMm ? "border-red-300" : ""}`}
-                    {...register("thicknessMm", { valueAsNumber: true })}
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300">
-                    <Scale className="h-3 w-3 text-slate-500" />
-                    Malzeme <span className="text-red-500">*</span>
-                  </Label>
-                  <Controller
-                    name="selectedMaterialId"
-                    control={control}
-                    render={({ field }) => (
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger className="h-8 w-full text-xs">
-                          <SelectValue placeholder="Malzeme" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {materials.map((m) => (
-                            <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="thicknessMm" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                  <Layers className="h-3.5 w-3.5 text-slate-500" />
+                  Kalınlık (mm) <span className="text-red-500">*</span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>Astar kalınlığı milimetre cinsinden. Örn: 0.40 mm.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </Label>
+                <Input
+                  id="thicknessMm"
+                  type="number"
+                  step="0.01"
+                  placeholder="Örn: 0.40"
+                  className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                    errors.thicknessMm ? "border-red-300 dark:border-red-700" : ""
+                  }`}
+                  {...register("thicknessMm", { valueAsNumber: true })}
+                />
+                {errors.thicknessMm && (
+                  <p className="text-sm text-red-500 font-medium flex items-center gap-1">
+                    <span className="text-red-500">⚠</span>
+                    {errors.thicknessMm.message}
+                  </p>
+                )}
               </div>
 
-              <OptionGroup title="Ek parçalar">
+              <div className="space-y-1.5">
+                <Label htmlFor="selectedMaterialId" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                  <Scale className="h-3.5 w-3.5 text-slate-500" />
+                  Malzeme <span className="text-red-500">*</span>
+                </Label>
+                <Controller
+                  name="selectedMaterialId"
+                  control={control}
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="h-10 w-full border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20">
+                        <SelectValue placeholder="Malzeme seçin" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {materials.map((m) => (
+                          <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
+
+              <OptionGroup title="Ek parçalar" hint="Açıksa final ağırlığa eklenir">
                 <OptionToggle
                   id="includePendantBail"
                   label="Kolye Tepeliği"
@@ -259,7 +286,7 @@ export function SheetMetalCalculator() {
                   badge={`+${PENDANT_BAIL_WEIGHT_G.toFixed(2)} g`}
                   checked={includePendantBail ?? false}
                   onCheckedChange={(v) => setValue("includePendantBail", v)}
-                  icon={<Link2 className="h-3 w-3" />}
+                  icon={<Link2 className="h-3.5 w-3.5" />}
                   iconTone="blue"
                 />
                 <OptionToggle
@@ -269,19 +296,19 @@ export function SheetMetalCalculator() {
                   badge={`+${BRACELET_CHAIN_WEIGHT_G.toFixed(2)} g`}
                   checked={includeBraceletChain ?? false}
                   onCheckedChange={(v) => setValue("includeBraceletChain", v)}
-                  icon={<Link className="h-3 w-3" />}
+                  icon={<Link className="h-3.5 w-3.5" />}
                   iconTone="emerald"
                 />
               </OptionGroup>
             </CardContent>
           </Card>
 
-          <div className="min-h-0">
+          <div className="lg:sticky lg:top-4 lg:h-fit">
             {!result ? (
-              <Card className="flex h-full min-h-[180px] items-center justify-center border-2 border-dashed border-slate-200 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-900/50">
-                <CardContent className="py-6">
-                  <div className="flex flex-col items-center justify-center space-y-2 text-center">
-                    <div className="rounded-full bg-slate-100 p-2 dark:bg-slate-800">
+              <Card className="w-full border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm">
+                <CardContent className="pt-6 pb-6">
+                  <div className="flex flex-col items-center justify-center text-center space-y-2">
+                    <div className="p-2 rounded-full bg-slate-100 dark:bg-slate-800">
                       <Scale className="h-5 w-5 text-slate-400" />
                     </div>
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
@@ -291,63 +318,101 @@ export function SheetMetalCalculator() {
                 </CardContent>
               </Card>
             ) : (
-              <Card className="overflow-hidden border-0 bg-gradient-to-br from-white to-slate-50/50 shadow-xl backdrop-blur-xl dark:from-slate-900 dark:to-slate-800/50">
-                <div className="border-b border-slate-200/50 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 px-3 py-2 dark:border-slate-700/50">
+              <Card className="w-full border-0 shadow-2xl bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900 dark:to-slate-800/50 backdrop-blur-xl overflow-hidden animate-in fade-in duration-200">
+                <div className="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-b border-slate-200/50 dark:border-slate-700/50 py-3 px-4">
                   <div className="flex items-center gap-2">
-                    <div className="rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 p-1 text-white">
-                      <Layers className="h-3.5 w-3.5" />
+                    <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
+                      <Layers className="h-4 w-4" />
                     </div>
-                    <h3 className="text-sm font-bold text-slate-900 dark:text-slate-50">Sonuçlar</h3>
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-300 bg-clip-text text-transparent">
+                      Astar Kesim Sonuçları
+                    </h3>
                   </div>
                 </div>
-                <CardContent className="space-y-1.5 p-3">
-                  <div className="flex items-center justify-between rounded-lg border border-slate-200/50 bg-slate-50/80 px-2.5 py-1.5 dark:border-slate-700/50 dark:bg-slate-800/40">
-                    <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Teorik Ham</span>
-                    <span className="text-sm font-bold tabular-nums">{formatGram(result.theoreticalG)} g</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-lg border border-slate-200/50 bg-slate-50/80 px-2.5 py-1.5 dark:border-slate-700/50 dark:bg-slate-800/40">
-                    <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Lazer Sonrası</span>
-                    <span className="text-sm font-bold tabular-nums">{formatGram(result.afterLaserG)} g</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-lg border border-slate-200/50 bg-slate-50/80 px-2.5 py-1.5 dark:border-slate-700/50 dark:bg-slate-800/40">
-                    <div>
-                      <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Cila Sonrası</span>
-                      <span className="ml-1 text-[10px] text-slate-400">×{factors.finish}</span>
-                    </div>
-                    <span className="text-sm font-bold tabular-nums">{formatGram(result.afterFinishG)} g</span>
-                  </div>
-                  {includePendantBail && (
-                    <div className="flex items-center justify-between rounded-lg border border-slate-200/50 px-2.5 py-1.5 dark:border-slate-700/50">
-                      <span className="text-xs font-medium text-slate-600">Kolye Tepeliği</span>
-                      <span className="text-sm font-bold text-emerald-600 tabular-nums">+{formatGram(PENDANT_BAIL_WEIGHT_G)} g</span>
-                    </div>
-                  )}
-                  {includeBraceletChain && (
-                    <div className="flex items-center justify-between rounded-lg border border-slate-200/50 px-2.5 py-1.5 dark:border-slate-700/50">
-                      <span className="text-xs font-medium text-slate-600">Bileklik Zinciri</span>
-                      <span className="text-sm font-bold text-emerald-600 tabular-nums">+{formatGram(BRACELET_CHAIN_WEIGHT_G)} g</span>
-                    </div>
-                  )}
-                  <div className="mt-1 flex items-center justify-between rounded-xl border-2 border-blue-200/50 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 px-3 py-2.5 dark:border-blue-800/50">
-                    <div className="flex items-center gap-2">
-                      <div className="rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 text-white">
-                        {calcMode === "gram-to-area" ? <Ruler className="h-3.5 w-3.5" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+                <CardContent className="space-y-3 p-4">
+                  <div className="grid gap-2">
+                    <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+                      <div className="flex items-center gap-2">
+                        <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                          <Scale className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Teorik Ham Ağırlık</span>
                       </div>
-                      <span className="text-sm font-bold text-slate-900 dark:text-slate-50">
-                        {calcMode === "gram-to-area" ? "Gerekli Alan" : "Final Ürün"}
+                      <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.theoreticalG)} g</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+                      <div className="flex items-center gap-2">
+                        <div className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+                          <Sparkles className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                        </div>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Lazer Sonrası</span>
+                      </div>
+                      <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.afterLaserG)} g</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+                      <div className="flex items-center gap-2">
+                        <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+                          <Sparkles className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Cila Sonrası</span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400">
+                            Cila kaybı: ×{factors.finish} (%{Math.round((1 - factors.finish) * 100)})
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.afterFinishG)} g</span>
+                    </div>
+                    {includePendantBail && (
+                      <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                            <Link2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Kolye Tepeliği</span>
+                        </div>
+                        <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">+{formatGram(PENDANT_BAIL_WEIGHT_G)} g</span>
+                      </div>
+                    )}
+                    {includeBraceletChain && (
+                      <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                            <Link className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Bileklik Zinciri</span>
+                        </div>
+                        <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">+{formatGram(BRACELET_CHAIN_WEIGHT_G)} g</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-200/50 dark:border-blue-800/50 shadow-lg">
+                      <div className="flex items-center gap-2">
+                        <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
+                          {calcMode === "gram-to-area" ? <Ruler className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}
+                        </div>
+                        <span className="text-lg font-bold text-slate-900 dark:text-slate-50">
+                          {calcMode === "gram-to-area" ? "Gerekli Alan" : "Final Ürün"}
+                        </span>
+                      </div>
+                      <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                        {calcMode === "gram-to-area" && areaResult != null
+                          ? `${formatInt(areaResult)} mm²`
+                          : `${formatGram(result.finalProductG)} g`}
                       </span>
                     </div>
-                    <span className="text-xl font-bold tabular-nums bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
-                      {calcMode === "gram-to-area" && areaResult != null
-                        ? `${formatInt(areaResult)} mm²`
-                        : `${formatGram(result.finalProductG)} g`}
-                    </span>
+                    <CopyDimensionButton type="area" />
                   </div>
-                  <CopyDimensionButton type="area" />
                 </CardContent>
               </Card>
             )}
           </div>
+        </div>
+
+        <div className="flex justify-center">
+          <MaterialSettings
+            onMaterialsChange={setMaterials}
+            onLossSettingsChange={setLossSettings}
+          />
         </div>
       </div>
     </TooltipProvider>
