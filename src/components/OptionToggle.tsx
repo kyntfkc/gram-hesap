@@ -46,7 +46,7 @@ export function OptionToggle({
   return (
     <div
       className={cn(
-        "flex items-center gap-3 px-3 py-3 transition-colors",
+        "flex items-center gap-3 px-3 py-5 transition-colors",
         checked && "bg-slate-50/80 dark:bg-slate-800/40"
       )}
     >
