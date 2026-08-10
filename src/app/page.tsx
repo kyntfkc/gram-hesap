@@ -14,7 +14,7 @@ export default function Home() {
         <div className="mb-6 text-center">
           <Logo />
           <p className="mt-2 text-base text-slate-600 dark:text-slate-400 md:text-lg max-w-2xl mx-auto">
-            3D ürünler, yüzük boyları ve 2D lazer kesim astar ağırlığı hesaplama
+            3D modelleme ve astar kesim ağırlık hesaplama
           </p>
         </div>
 

@@ -101,29 +101,6 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
               <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(necklaceTipGrams)} g</span>
             </div>
           )}
-          {showEarringBack && (
-            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
-                  <Gem className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
-                </div>
-                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Küpe Çivi/Kelebek</span>
-              </div>
-              <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(earringBackGrams)} g</span>
-            </div>
-          )}
-
-          {showBraceletChain && (
-            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
-                  <Link className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                </div>
-                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Bileklik Zinciri</span>
-              </div>
-              <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(braceletChainGrams)} g</span>
-            </div>
-          )}
 
           {showPendantChain && (
             <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
@@ -134,6 +111,30 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Kolye Zinciri</span>
               </div>
               <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(pendantChainGrams)} g</span>
+            </div>
+          )}
+
+          {showBraceletChain && (
+            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+                  <Link className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Bileklik Zinciri</span>
+              </div>
+              <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(braceletChainGrams)} g</span>
+            </div>
+          )}
+
+          {showEarringBack && (
+            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+                  <Gem className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Küpe Çivi/Kelebek</span>
+              </div>
+              <span className="text-base font-bold text-slate-900 dark:text-slate-50">+{formatGram(earringBackGrams)} g</span>
             </div>
           )}
         </div>

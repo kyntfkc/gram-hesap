@@ -13,18 +13,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calculator, Ruler, Gem, Settings2, Link, HelpCircle, Scale } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { Calculator, Ruler, Gem, Settings2, Link, Link2, HelpCircle, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { calculateWeight, calculateVolumeFromWeight, CalculationParams, CalculationResult } from "@/lib/calculations";
 import { PENDANT_CHAIN_WEIGHT_G } from "@/lib/sheetMetalCalculations";
-import { weightCalculatorSchema, WeightCalculatorFormData } from "@/lib/schema";
+import { weightCalculatorSchema } from "@/lib/schema";
 import { Material, getMaterials, defaultMaterial } from "@/lib/materials";
 import { LossSettings, getLossSettings, ExtraWeightSettings, getExtraWeightSettings } from "@/lib/settings";
 import { saveVolumeMm3 } from "@/lib/copyDimensions";
 import { ResultCard } from "./ResultCard";
 import { MaterialSettings } from "./MaterialSettings";
+import { OptionGroup, OptionToggle } from "./OptionToggle";
 
 export function WeightCalculator() {
   const [result, setResult] = useState<CalculationResult | null>(null);
@@ -134,13 +134,13 @@ export function WeightCalculator() {
       <div className="w-full max-w-6xl mx-auto space-y-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
-          <CardContent className="space-y-4 p-5">
+          <CardContent className="space-y-5 p-5">
           <div className="flex items-center gap-2 mb-4">
             <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
               <Calculator className="h-4 w-4" />
             </div>
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-              Hesaplama Parametreleri
+              Parametreler
             </h2>
           </div>
 
@@ -313,185 +313,61 @@ export function WeightCalculator() {
             )}
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
-                <Link className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="necklaceTip" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                    Kolye Tepeliği
-                  </Label>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p>Kolye tepeliği ekleniyorsa açın. Ayarlardan gram değerini değiştirebilirsiniz.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  {includeNecklaceTip && (
-                    <span className="px-1.5 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">
-                      +{extraWeightSettings.necklaceTipGrams.toFixed(2)} g
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  {includeNecklaceTip ? "Hesaba dahil" : "Hesaba dahil değil"}
-                </p>
-              </div>
-            </div>
-            <Switch
+          <OptionGroup title="Ek parçalar" hint="Açıksa final ağırlığa eklenir">
+            <OptionToggle
               id="necklaceTip"
+              label="Kolye Tepeliği"
+              tooltip="Kolye tepeliği ekleniyorsa açın. Gram değeri ayarlardan değişir."
+              badge={`+${extraWeightSettings.necklaceTipGrams.toFixed(2)} g`}
               checked={includeNecklaceTip}
               onCheckedChange={setIncludeNecklaceTip}
+              icon={<Link2 className="h-3.5 w-3.5" />}
+              iconTone="blue"
             />
-          </div>
-
-          <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
-                <Gem className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="earringBack" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                    Küpe Çivi/Kelebek
-                  </Label>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p>Küpe çivi veya kelebek ekleniyorsa açın. Ayarlardan gram değerini değiştirebilirsiniz.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  {includeEarringBack && (
-                    <span className="px-1.5 py-0.5 rounded-md bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs font-bold">
-                      +{extraWeightSettings.earringBackGrams.toFixed(2)} g
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  {includeEarringBack ? "Hesaba dahil" : "Hesaba dahil değil"}
-                </p>
-              </div>
-            </div>
-            <Switch
-              id="earringBack"
-              checked={includeEarringBack}
-              onCheckedChange={setIncludeEarringBack}
-            />
-          </div>
-
-          <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
-                <Link className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="braceletChain" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                    Bileklik Zinciri
-                  </Label>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p>Bileklik zinciri ekleniyorsa açın. Ayarlardan gram değerini değiştirebilirsiniz.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  {includeBraceletChain && (
-                    <span className="px-1.5 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">
-                      +{extraWeightSettings.braceletChainGrams.toFixed(2)} g
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  {includeBraceletChain ? "Hesaba dahil" : "Hesaba dahil değil"}
-                </p>
-              </div>
-            </div>
-            <Switch
-              id="braceletChain"
-              checked={includeBraceletChain}
-              onCheckedChange={setIncludeBraceletChain}
-            />
-          </div>
-
-          <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
-                <Link className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="pendantChain" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                    Kolye Zinciri
-                  </Label>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p>Kolye zinciri ekleniyorsa açın. Açıksa +{PENDANT_CHAIN_WEIGHT_G.toFixed(2).replace(".", ",")} g eklenir.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  {includePendantChain && (
-                    <span className="px-1.5 py-0.5 rounded-md bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-xs font-bold">
-                      +{PENDANT_CHAIN_WEIGHT_G.toFixed(2)} g
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  {includePendantChain ? "Hesaba dahil" : "Hesaba dahil değil"}
-                </p>
-              </div>
-            </div>
-            <Switch
+            <OptionToggle
               id="pendantChain"
+              label="Kolye Zinciri"
+              tooltip={`Kolye zinciri ekleniyorsa açın. +${PENDANT_CHAIN_WEIGHT_G.toFixed(2).replace(".", ",")} g eklenir.`}
+              badge={`+${PENDANT_CHAIN_WEIGHT_G.toFixed(2)} g`}
               checked={includePendantChain}
               onCheckedChange={setIncludePendantChain}
+              icon={<Link className="h-3.5 w-3.5" />}
+              iconTone="indigo"
             />
-          </div>
+            <OptionToggle
+              id="braceletChain"
+              label="Bileklik Zinciri"
+              tooltip="Bileklik zinciri ekleniyorsa açın. Gram değeri ayarlardan değişir."
+              badge={`+${extraWeightSettings.braceletChainGrams.toFixed(2)} g`}
+              checked={includeBraceletChain}
+              onCheckedChange={setIncludeBraceletChain}
+              icon={<Link className="h-3.5 w-3.5" />}
+              iconTone="emerald"
+            />
+            <OptionToggle
+              id="earringBack"
+              label="Küpe Çivi/Kelebek"
+              tooltip="Küpe çivi veya kelebek ekleniyorsa açın. Gram değeri ayarlardan değişir."
+              badge={`+${extraWeightSettings.earringBackGrams.toFixed(2)} g`}
+              checked={includeEarringBack}
+              onCheckedChange={setIncludeEarringBack}
+              icon={<Gem className="h-3.5 w-3.5" />}
+              iconTone="purple"
+            />
+          </OptionGroup>
 
-          <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30">
-                <Settings2 className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="moldFinishing" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                    Kalıp Tesviye Kayıpları
-                  </Label>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p>Kalıp tesviye işlemi sırasında oluşan kayıpları hesaba dahil etmek için açın. Yüzde değerini ayarlar menüsünden belirleyebilirsiniz.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  {includeMoldFinishing && (
-                    <span className="px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold">
-                      {lossSettings.moldFinishingLoss}%
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  {includeMoldFinishing ? "Hesaba dahil" : "Hesaba dahil değil"}
-                </p>
-              </div>
-            </div>
-            <Switch
+          <OptionGroup title="Kayıplar" hint="Üretim firesi">
+            <OptionToggle
               id="moldFinishing"
+              label="Kalıp Tesviye"
+              tooltip="Kalıp tesviye kayıplarını hesaba dahil eder. Yüzde ayarlardan değişir."
+              badge={`${lossSettings.moldFinishingLoss}%`}
               checked={includeMoldFinishing}
               onCheckedChange={setIncludeMoldFinishing}
+              icon={<Settings2 className="h-3.5 w-3.5" />}
+              iconTone="amber"
             />
-          </div>
+          </OptionGroup>
         </CardContent>
       </Card>
 

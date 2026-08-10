@@ -14,7 +14,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Ruler, Layers, HelpCircle, Scale, Sparkles, CheckCircle2, Link2, Link } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { calculateSheetMetal, calculateAreaFromWeight, SheetMetalResult, PENDANT_BAIL_WEIGHT_G, BRACELET_CHAIN_WEIGHT_G, getMaterialFactors } from "@/lib/sheetMetalCalculations";
@@ -24,6 +23,7 @@ import { LossSettings, getLossSettings } from "@/lib/settings";
 import { formatInt, formatGram, saveAreaMm2 } from "@/lib/copyDimensions";
 import { CopyDimensionButton } from "@/components/CopyDimensionButton";
 import { MaterialSettings } from "./MaterialSettings";
+import { OptionGroup, OptionToggle } from "./OptionToggle";
 
 export function SheetMetalCalculator() {
   const [result, setResult] = useState<SheetMetalResult | null>(null);
@@ -127,13 +127,13 @@ export function SheetMetalCalculator() {
       <div className="w-full max-w-6xl mx-auto space-y-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
-            <CardContent className="space-y-4 p-5">
+            <CardContent className="space-y-5 p-5">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
                   <Layers className="h-4 w-4" />
                 </div>
                 <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-                  Astar Kesim Parametreleri
+                  Parametreler
                 </h2>
               </div>
 
@@ -278,91 +278,28 @@ export function SheetMetalCalculator() {
                 />
               </div>
 
-              <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 p-3 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400">
-                    <Link2 className="h-4 w-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Kolye Tepeliği</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      {includePendantBail ? "Hesaba dahil" : "Hesaba dahil değil"}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          type="button"
-                          className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200/80 dark:bg-slate-600/80 text-slate-500 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors"
-                        >
-                          <HelpCircle className="h-3.5 w-3.5" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-xs">
-                        <p>Kolye tepeliği (bail) ağırlığı hesaba eklenir. Açıksa +{PENDANT_BAIL_WEIGHT_G.toFixed(2).replace(".", ",")} g eklenir.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <span className="rounded-md bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
-                      +{PENDANT_BAIL_WEIGHT_G.toFixed(2)} g
-                    </span>
-                    <Controller
-                      name="includePendantBail"
-                      control={control}
-                      render={({ field }) => (
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          aria-label="Kolye tepeliği hesaba dahil"
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 p-3 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400">
-                    <Link className="h-4 w-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Bileklik Zinciri</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      {includeBraceletChain ? "Hesaba dahil" : "Hesaba dahil değil"}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          type="button"
-                          className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200/80 dark:bg-slate-600/80 text-slate-500 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors"
-                        >
-                          <HelpCircle className="h-3.5 w-3.5" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-xs">
-                        <p>Bileklik zinciri ağırlığı hesaba eklenir. Açıksa +0,75 g eklenir.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <span className="rounded-md bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
-                      +0.75 g
-                    </span>
-                    <Controller
-                      name="includeBraceletChain"
-                      control={control}
-                      render={({ field }) => (
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          aria-label="Bileklik zinciri hesaba dahil"
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-              </div>
+              <OptionGroup title="Ek parçalar" hint="Açıksa final ağırlığa eklenir">
+                <OptionToggle
+                  id="includePendantBail"
+                  label="Kolye Tepeliği"
+                  tooltip={`Kolye tepeliği (bail) ağırlığı. Açıksa +${PENDANT_BAIL_WEIGHT_G.toFixed(2).replace(".", ",")} g eklenir.`}
+                  badge={`+${PENDANT_BAIL_WEIGHT_G.toFixed(2)} g`}
+                  checked={includePendantBail ?? false}
+                  onCheckedChange={(v) => setValue("includePendantBail", v)}
+                  icon={<Link2 className="h-3.5 w-3.5" />}
+                  iconTone="blue"
+                />
+                <OptionToggle
+                  id="includeBraceletChain"
+                  label="Bileklik Zinciri"
+                  tooltip={`Bileklik zinciri ağırlığı. Açıksa +${BRACELET_CHAIN_WEIGHT_G.toFixed(2).replace(".", ",")} g eklenir.`}
+                  badge={`+${BRACELET_CHAIN_WEIGHT_G.toFixed(2)} g`}
+                  checked={includeBraceletChain ?? false}
+                  onCheckedChange={(v) => setValue("includeBraceletChain", v)}
+                  icon={<Link className="h-3.5 w-3.5" />}
+                  iconTone="emerald"
+                />
+              </OptionGroup>
             </CardContent>
           </Card>
 
