@@ -11,6 +11,16 @@ export const defaultMaterials: Material[] = [
     density: 10.4,
   },
   {
+    id: "8k-gold",
+    name: "8 Ayar Altın",
+    density: 11.0,
+  },
+  {
+    id: "10k-gold",
+    name: "10 Ayar Altın",
+    density: 11.57,
+  },
+  {
     id: "14k-gold",
     name: "14 Ayar Altın",
     density: 13.07,

@@ -10,6 +10,7 @@ export interface CalculationParams {
   stoneWeight: number; // g
   necklaceTipGrams: number; // Kolye tepeliği (g), 0 = hesaba dahil değil
   earringBackGrams: number; // Küpe çivi/kelebek (g), 0 = hesaba dahil değil
+  braceletChainGrams: number; // Bileklik zinciri (g), 0 = hesaba dahil değil
   ringConeDeductionG: number; // Yüzük koçanı (g), 0 = hesaba dahil değil, açıkken final'dan düşülür
 }
 
@@ -21,7 +22,7 @@ export interface CalculationResult {
 }
 
 export function calculateWeight(params: CalculationParams): CalculationResult {
-  const { volume, materialDensity, infill, moldFinishingLoss, productionLoss, stoneWeight, necklaceTipGrams, earringBackGrams, ringConeDeductionG = 0 } = params;
+  const { volume, materialDensity, infill, moldFinishingLoss, productionLoss, stoneWeight, necklaceTipGrams, earringBackGrams, braceletChainGrams, ringConeDeductionG = 0 } = params;
 
   // Hacim mm³'den cm³'e çevir (1 cm³ = 1000 mm³)
   const volumeCm3 = volume / 1000;
@@ -36,7 +37,7 @@ export function calculateWeight(params: CalculationParams): CalculationResult {
   const afterProductionLoss = afterMoldFinishing * (1 - productionLoss / 100);
 
   // 4. Ekstra ağırlıklar (ayarlardan gelen gram değerleri)
-  const extraWeight = (necklaceTipGrams || 0) + (earringBackGrams || 0);
+  const extraWeight = (necklaceTipGrams || 0) + (earringBackGrams || 0) + (braceletChainGrams || 0);
 
   // 5. Final Ağırlık = Üretim Kayıpları Sonrası + Taş Ağırlığı + Ekstra Ağırlıklar - Yüzük Koçanı (açıksa)
   const finalWeight = afterProductionLoss + stoneWeight + extraWeight - (ringConeDeductionG || 0);
@@ -46,6 +47,53 @@ export function calculateWeight(params: CalculationParams): CalculationResult {
     afterMoldFinishing: Math.round(afterMoldFinishing * 100) / 100,
     afterProductionLoss: Math.round(afterProductionLoss * 100) / 100,
     finalWeight: Math.round(finalWeight * 100) / 100,
+  };
+}
+
+export interface InverseWeightResult extends CalculationResult {
+  volumeMm3: number;
+}
+
+/** Hedef final ağırlıktan gerekli hacmi (mm³) hesaplar */
+export function calculateVolumeFromWeight(
+  params: CalculationParams & { targetFinalWeight: number }
+): InverseWeightResult | null {
+  const {
+    targetFinalWeight,
+    materialDensity,
+    infill,
+    moldFinishingLoss,
+    productionLoss,
+    stoneWeight,
+    necklaceTipGrams,
+    earringBackGrams,
+    braceletChainGrams,
+    ringConeDeductionG = 0,
+  } = params;
+
+  const extraWeight = (necklaceTipGrams || 0) + (earringBackGrams || 0) + (braceletChainGrams || 0);
+  const afterProductionLoss =
+    targetFinalWeight - stoneWeight - extraWeight + (ringConeDeductionG || 0);
+
+  if (afterProductionLoss <= 0 || materialDensity <= 0) return null;
+
+  const prodFactor = 1 - productionLoss / 100;
+  const moldFactor = 1 - moldFinishingLoss / 100;
+  if (prodFactor <= 0) return null;
+  if (moldFinishingLoss > 0 && moldFactor <= 0) return null;
+
+  const afterMoldFinishing = afterProductionLoss / prodFactor;
+  const baseWeight =
+    moldFinishingLoss > 0 ? afterMoldFinishing / moldFactor : afterMoldFinishing;
+
+  const volumeCm3 = baseWeight / (materialDensity * (infill / 100));
+  const volumeMm3 = volumeCm3 * 1000;
+
+  const forward = calculateWeight({ ...params, volume: volumeMm3 });
+
+  return {
+    volumeMm3: Math.round(volumeMm3 * 100) / 100,
+    ...forward,
   };
 }
 

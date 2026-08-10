@@ -22,11 +22,11 @@ export default function Home() {
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
             <TabsTrigger value="weight" className="gap-2">
               <Calculator className="h-4 w-4" />
-              Ağırlık Hesaplayıcı
+              3D Modelleme
             </TabsTrigger>
             <TabsTrigger value="sheet" className="gap-2">
               <Scissors className="h-4 w-4" />
-              2D Lazer Kesim
+              Astar Kesim
             </TabsTrigger>
           </TabsList>
 

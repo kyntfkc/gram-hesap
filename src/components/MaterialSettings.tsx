@@ -49,6 +49,7 @@ export function MaterialSettings({
   const [extraWeightInputs, setExtraWeightInputs] = useState<{ [key: string]: string }>(() => ({
     necklaceTipGrams: getExtraWeightSettings().necklaceTipGrams.toString(),
     earringBackGrams: getExtraWeightSettings().earringBackGrams.toString(),
+    braceletChainGrams: getExtraWeightSettings().braceletChainGrams.toString(),
   }));
   const [isOpen, setIsOpen] = useState(false);
 
@@ -126,6 +127,7 @@ export function MaterialSettings({
     setExtraWeightInputs({
       necklaceTipGrams: resetExtra.necklaceTipGrams.toString(),
       earringBackGrams: resetExtra.earringBackGrams.toString(),
+      braceletChainGrams: resetExtra.braceletChainGrams.toString(),
     });
     onMaterialsChange(resetMat);
     onLossSettingsChange(resetLoss);
@@ -276,6 +278,21 @@ export function MaterialSettings({
                       value={extraWeightInputs.earringBackGrams}
                       onChange={(e) => handleExtraWeightInputChange("earringBackGrams", e.target.value)}
                       onBlur={() => handleExtraWeightBlur("earringBackGrams")}
+                      className="h-9"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="braceletChainGrams" className="text-sm font-medium">
+                      Bileklik Zinciri (g)
+                    </Label>
+                    <Input
+                      id="braceletChainGrams"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={extraWeightInputs.braceletChainGrams}
+                      onChange={(e) => handleExtraWeightInputChange("braceletChainGrams", e.target.value)}
+                      onBlur={() => handleExtraWeightBlur("braceletChainGrams")}
                       className="h-9"
                     />
                   </div>

@@ -49,11 +49,13 @@ export function resetLossSettings(): LossSettings {
 export interface ExtraWeightSettings {
   necklaceTipGrams: number; // Kolye tepeliği (g)
   earringBackGrams: number; // Küpe çivi/kelebek (g)
+  braceletChainGrams: number; // Bileklik zinciri (g)
 }
 
 export const defaultExtraWeightSettings: ExtraWeightSettings = {
-  necklaceTipGrams: 0.15,
+  necklaceTipGrams: 0.12,
   earringBackGrams: 0.4,
+  braceletChainGrams: 0.75,
 };
 
 const EXTRA_WEIGHT_SETTINGS_KEY = "extra-weight-settings";
@@ -62,7 +64,14 @@ export function getExtraWeightSettings(): ExtraWeightSettings {
   if (typeof window === "undefined") return defaultExtraWeightSettings;
   try {
     const stored = localStorage.getItem(EXTRA_WEIGHT_SETTINGS_KEY);
-    if (stored) return JSON.parse(stored);
+    if (stored) {
+      const parsed = JSON.parse(stored) as Partial<ExtraWeightSettings>;
+      // Eski localStorage verileri yeni alanları içermeyebilir
+      return {
+        ...defaultExtraWeightSettings,
+        ...parsed,
+      };
+    }
   } catch (error) {
     console.error("Error loading extra weight settings from localStorage:", error);
   }

@@ -12,6 +12,11 @@ export const weightCalculatorSchema = z.object({
       message: "Hacim çok büyük. Lütfen daha küçük bir değer girin (maksimum: 100,000,000 mm³)",
     })
     .optional(),
+  targetWeightG: z
+    .number({ message: "Ağırlık sayı olmalıdır" })
+    .positive({ message: "Ağırlık 0'dan büyük olmalıdır" })
+    .max(10000, { message: "Ağırlık en fazla 10.000 g olabilir" })
+    .optional(),
   materialDensity: z
     .number({
       message: "Malzeme yoğunluğu sayı olmalıdır",
@@ -41,16 +46,21 @@ export const sheetMetalSchema = z.object({
   areaMm2: z
     .number({ message: "Alan sayı olmalıdır" })
     .positive({ message: "Alan 0'dan büyük olmalıdır" })
-    .max(100000000, { message: "Alan en fazla 100.000.000 mm² olabilir" }),
+    .max(100000000, { message: "Alan en fazla 100.000.000 mm² olabilir" })
+    .optional(),
+  targetGramG: z
+    .number({ message: "Ağırlık sayı olmalıdır" })
+    .positive({ message: "Ağırlık 0'dan büyük olmalıdır" })
+    .max(10000, { message: "Ağırlık en fazla 10.000 g olabilir" })
+    .optional(),
   thicknessMm: z
     .number({ message: "Kalınlık sayı olmalıdır" })
     .positive({ message: "Kalınlık 0'dan büyük olmalıdır. Örn: 0.40" })
     .max(100, { message: "Kalınlık en fazla 100 mm" }),
-  complexity: z.enum(["high", "low"], {
-    message: "Detay seviyesi seçin",
-  }),
+  selectedMaterialId: z.string().default("14k-gold"),
   includePendantBail: z.boolean().default(false),
   includePendantChain: z.boolean().default(false),
+  includeBraceletChain: z.boolean().default(false),
 });
 
 export type SheetMetalFormData = z.input<typeof sheetMetalSchema>;
