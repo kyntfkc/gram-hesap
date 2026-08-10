@@ -131,17 +131,24 @@ export function WeightCalculator() {
 
   return (
     <TooltipProvider>
-      <div className="w-full max-w-6xl mx-auto space-y-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
-          <CardContent className="space-y-5 p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
-              <Calculator className="h-4 w-4" />
+      <div className="w-full max-w-6xl mx-auto space-y-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <Card className="shadow-xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl py-0 gap-0">
+          <CardContent className="space-y-3 p-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                <Calculator className="h-4 w-4" />
+              </div>
+              <h2 className="text-base font-semibold text-slate-900 dark:text-slate-50">
+                Parametreler
+              </h2>
             </div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-              Parametreler
-            </h2>
+            <MaterialSettings
+              onMaterialsChange={setMaterials}
+              onLossSettingsChange={setLossSettings}
+              onExtraWeightSettingsChange={setExtraWeightSettings}
+            />
           </div>
 
           <div className="flex gap-2 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
@@ -186,7 +193,7 @@ export function WeightCalculator() {
               type="number"
               step="0.01"
               placeholder="Örn: 5.50"
-              className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+              className={`h-9 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
                 errors.targetWeightG ? "border-red-300 dark:border-red-700" : ""
               }`}
               {...register("targetWeightG", { valueAsNumber: true })}
@@ -217,7 +224,7 @@ export function WeightCalculator() {
               type="number"
               step="0.01"
               placeholder="Örn: 50000"
-              className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+              className={`h-9 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
                 errors.volume ? "border-red-300 dark:border-red-700 focus:border-red-500 focus:ring-red-500/20 animate-in shake duration-300" : ""
               }`}
               {...register("volume", { valueAsNumber: true })}
@@ -258,7 +265,7 @@ export function WeightCalculator() {
                     }
                   }}
                 >
-                  <SelectTrigger className={`h-10 w-full border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                  <SelectTrigger className={`h-9 w-full border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
                     errors.materialDensity ? "border-red-300 dark:border-red-700 focus:border-red-500 focus:ring-red-500/20" : ""
                   }`}>
                     <SelectValue placeholder="Malzeme seçin" />
@@ -300,7 +307,7 @@ export function WeightCalculator() {
               step="0.01"
               min="0"
               placeholder="Örn: 2.5"
-              className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+              className={`h-9 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
                 errors.stoneWeight ? "border-red-300 dark:border-red-700 focus:border-red-500 focus:ring-red-500/20" : ""
               }`}
               {...register("stoneWeight", { valueAsNumber: true })}
@@ -313,7 +320,7 @@ export function WeightCalculator() {
             )}
           </div>
 
-          <OptionGroup title="Ek parçalar" hint="Açıksa final ağırlığa eklenir">
+          <OptionGroup title="Seçenekler" hint="Açıksa hesaba dahil edilir">
             <OptionToggle
               id="necklaceTip"
               label="Kolye Tepeliği"
@@ -354,9 +361,6 @@ export function WeightCalculator() {
               icon={<Gem className="h-3.5 w-3.5" />}
               iconTone="purple"
             />
-          </OptionGroup>
-
-          <OptionGroup title="Kayıplar" hint="Üretim firesi">
             <OptionToggle
               id="moldFinishing"
               label="Kalıp Tesviye"
@@ -387,14 +391,6 @@ export function WeightCalculator() {
           pendantChainGrams={PENDANT_CHAIN_WEIGHT_G}
         />
       </div>
-      </div>
-
-      <div className="flex justify-center">
-        <MaterialSettings
-          onMaterialsChange={setMaterials}
-          onLossSettingsChange={setLossSettings}
-          onExtraWeightSettingsChange={setExtraWeightSettings}
-        />
       </div>
       </div>
     </TooltipProvider>

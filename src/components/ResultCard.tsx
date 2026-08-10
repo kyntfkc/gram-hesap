@@ -45,20 +45,20 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
   }
 
   return (
-    <Card className="w-full border-0 shadow-2xl bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900 dark:to-slate-800/50 backdrop-blur-xl overflow-hidden animate-in fade-in duration-200">
-      <CardHeader className="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-b border-slate-200/50 dark:border-slate-700/50 py-3">
+    <Card className="w-full border-0 shadow-xl bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900 dark:to-slate-800/50 backdrop-blur-xl overflow-hidden animate-in fade-in duration-200 py-0 gap-0">
+      <CardHeader className="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-b border-slate-200/50 dark:border-slate-700/50 py-2.5 px-4 [.border-b]:pb-2.5">
         <div className="flex items-center gap-2">
           <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
             <TrendingUp className="h-4 w-4" />
           </div>
-          <CardTitle className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-300 bg-clip-text text-transparent">
+          <CardTitle className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-300 bg-clip-text text-transparent">
             Hesaplama Sonuçları
           </CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="space-y-3 p-4">
-        <div className="grid gap-2">
-          <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+      <CardContent className="space-y-2 p-3">
+        <div className="grid gap-1.5">
+          <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
                 <Scale className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
@@ -69,7 +69,7 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
           </div>
           
           {showMoldFinishing && (
-          <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+          <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30">
                 <Sparkles className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
@@ -80,7 +80,7 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
           </div>
           )}
           
-          <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+          <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
                 <Sparkles className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
@@ -91,7 +91,7 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
           </div>
 
           {showNecklaceTip && (
-            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
                   <Link className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
@@ -103,7 +103,7 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
           )}
 
           {showPendantChain && (
-            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
                   <Link className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
@@ -115,7 +115,7 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
           )}
 
           {showBraceletChain && (
-            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
                   <Link className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
@@ -127,7 +127,7 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
           )}
 
           {showEarringBack && (
-            <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
                   <Gem className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
@@ -139,8 +139,8 @@ export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFin
           )}
         </div>
         
-        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-          <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-200/50 dark:border-blue-800/50 shadow-lg">
+        <div className="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+          <div className="flex justify-between items-center p-3 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-200/50 dark:border-blue-800/50 shadow-lg">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
                 {reverseMode ? <Ruler className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}

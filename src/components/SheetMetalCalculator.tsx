@@ -124,17 +124,23 @@ export function SheetMetalCalculator() {
 
   return (
     <TooltipProvider>
-      <div className="w-full max-w-6xl mx-auto space-y-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <Card className="shadow-2xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
-            <CardContent className="space-y-5 p-5">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
-                  <Layers className="h-4 w-4" />
+      <div className="w-full max-w-6xl mx-auto space-y-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <Card className="shadow-xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl py-0 gap-0">
+            <CardContent className="space-y-3 p-4">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                    <Layers className="h-4 w-4" />
+                  </div>
+                  <h2 className="text-base font-semibold text-slate-900 dark:text-slate-50">
+                    Parametreler
+                  </h2>
                 </div>
-                <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-                  Parametreler
-                </h2>
+                <MaterialSettings
+                  onMaterialsChange={setMaterials}
+                  onLossSettingsChange={setLossSettings}
+                />
               </div>
 
               <div className="flex gap-2 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
@@ -179,7 +185,7 @@ export function SheetMetalCalculator() {
                   type="number"
                   step="0.01"
                   placeholder="Örn: 0.65"
-                  className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                  className={`h-9 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
                     errors.targetGramG ? "border-red-300 dark:border-red-700" : ""
                   }`}
                   {...register("targetGramG", { valueAsNumber: true })}
@@ -210,7 +216,7 @@ export function SheetMetalCalculator() {
                   type="number"
                   step="0.0001"
                   placeholder="Örn: 68.6471"
-                  className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                  className={`h-9 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
                     errors.areaMm2 ? "border-red-300 dark:border-red-700" : ""
                   }`}
                   {...register("areaMm2", { valueAsNumber: true })}
@@ -242,7 +248,7 @@ export function SheetMetalCalculator() {
                   type="number"
                   step="0.01"
                   placeholder="Örn: 0.40"
-                  className={`h-10 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
+                  className={`h-9 border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20 transition-all ${
                     errors.thicknessMm ? "border-red-300 dark:border-red-700" : ""
                   }`}
                   {...register("thicknessMm", { valueAsNumber: true })}
@@ -265,7 +271,7 @@ export function SheetMetalCalculator() {
                   control={control}
                   render={({ field }) => (
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="h-10 w-full border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20">
+                      <SelectTrigger className="h-9 w-full border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500/20">
                         <SelectValue placeholder="Malzeme seçin" />
                       </SelectTrigger>
                       <SelectContent>
@@ -318,20 +324,20 @@ export function SheetMetalCalculator() {
                 </CardContent>
               </Card>
             ) : (
-              <Card className="w-full border-0 shadow-2xl bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900 dark:to-slate-800/50 backdrop-blur-xl overflow-hidden animate-in fade-in duration-200">
-                <div className="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-b border-slate-200/50 dark:border-slate-700/50 py-3 px-4">
+              <Card className="w-full border-0 shadow-xl bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900 dark:to-slate-800/50 backdrop-blur-xl overflow-hidden animate-in fade-in duration-200 py-0 gap-0">
+                <div className="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-b border-slate-200/50 dark:border-slate-700/50 py-2.5 px-4">
                   <div className="flex items-center gap-2">
                     <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
                       <Layers className="h-4 w-4" />
                     </div>
-                    <h3 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-300 bg-clip-text text-transparent">
+                    <h3 className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-300 bg-clip-text text-transparent">
                       Astar Kesim Sonuçları
                     </h3>
                   </div>
                 </div>
-                <CardContent className="space-y-3 p-4">
-                  <div className="grid gap-2">
-                    <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+                <CardContent className="space-y-2 p-3">
+                  <div className="grid gap-1.5">
+                    <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
                       <div className="flex items-center gap-2">
                         <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
                           <Scale className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
@@ -340,7 +346,7 @@ export function SheetMetalCalculator() {
                       </div>
                       <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.theoreticalG)} g</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
                       <div className="flex items-center gap-2">
                         <div className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30">
                           <Sparkles className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
@@ -349,7 +355,7 @@ export function SheetMetalCalculator() {
                       </div>
                       <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.afterLaserG)} g</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
                       <div className="flex items-center gap-2">
                         <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
                           <Sparkles className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
@@ -364,7 +370,7 @@ export function SheetMetalCalculator() {
                       <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.afterFinishG)} g</span>
                     </div>
                     {includePendantBail && (
-                      <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
+                      <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
                         <div className="flex items-center gap-2">
                           <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
                             <Link2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
@@ -375,7 +381,7 @@ export function SheetMetalCalculator() {
                       </div>
                     )}
                     {includeBraceletChain && (
-                      <div className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
+                      <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
                         <div className="flex items-center gap-2">
                           <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
                             <Link className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
@@ -385,7 +391,7 @@ export function SheetMetalCalculator() {
                         <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">+{formatGram(BRACELET_CHAIN_WEIGHT_G)} g</span>
                       </div>
                     )}
-                    <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-200/50 dark:border-blue-800/50 shadow-lg">
+                    <div className="flex justify-between items-center p-3 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-200/50 dark:border-blue-800/50 shadow-lg">
                       <div className="flex items-center gap-2">
                         <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
                           {calcMode === "gram-to-area" ? <Ruler className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}
@@ -406,13 +412,6 @@ export function SheetMetalCalculator() {
               </Card>
             )}
           </div>
-        </div>
-
-        <div className="flex justify-center">
-          <MaterialSettings
-            onMaterialsChange={setMaterials}
-            onLossSettingsChange={setLossSettings}
-          />
         </div>
       </div>
     </TooltipProvider>
