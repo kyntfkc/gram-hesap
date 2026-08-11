@@ -335,9 +335,9 @@ export function SheetMetalCalculator() {
                     </h3>
                   </div>
                 </div>
-                <CardContent className="space-y-2 p-3">
-                  <div className="grid gap-1.5">
-                    <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+                <CardContent className="space-y-3 p-4">
+                  <div className="grid gap-3">
+                    <div className="flex justify-between items-center p-3.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
                       <div className="flex items-center gap-2">
                         <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
                           <Scale className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
@@ -346,7 +346,7 @@ export function SheetMetalCalculator() {
                       </div>
                       <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.theoreticalG)} g</span>
                     </div>
-                    <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-center p-3.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
                       <div className="flex items-center gap-2">
                         <div className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30">
                           <Sparkles className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
@@ -355,7 +355,7 @@ export function SheetMetalCalculator() {
                       </div>
                       <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.afterLaserG)} g</span>
                     </div>
-                    <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-center p-3.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-md transition-shadow">
                       <div className="flex items-center gap-2">
                         <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30">
                           <Sparkles className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
@@ -370,7 +370,7 @@ export function SheetMetalCalculator() {
                       <span className="text-base font-bold text-slate-900 dark:text-slate-50">{formatGram(result.afterFinishG)} g</span>
                     </div>
                     {includePendantBail && (
-                      <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
+                      <div className="flex justify-between items-center p-3.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
                         <div className="flex items-center gap-2">
                           <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
                             <Link2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
@@ -381,7 +381,7 @@ export function SheetMetalCalculator() {
                       </div>
                     )}
                     {includeBraceletChain && (
-                      <div className="flex justify-between items-center p-2.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
+                      <div className="flex justify-between items-center p-3.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
                         <div className="flex items-center gap-2">
                           <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
                             <Link className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
@@ -391,7 +391,7 @@ export function SheetMetalCalculator() {
                         <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">+{formatGram(BRACELET_CHAIN_WEIGHT_G)} g</span>
                       </div>
                     )}
-                    <div className="flex justify-between items-center p-3 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-200/50 dark:border-blue-800/50 shadow-lg">
+                    <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-200/50 dark:border-blue-800/50 shadow-lg">
                       <div className="flex items-center gap-2">
                         <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
                           {calcMode === "gram-to-area" ? <Ruler className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}

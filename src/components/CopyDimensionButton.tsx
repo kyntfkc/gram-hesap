@@ -31,7 +31,7 @@ export function CopyDimensionButton({ type }: CopyDimensionButtonProps) {
       type="button"
       variant="outline"
       size="sm"
-      className="w-full mt-1.5"
+      className="w-full mt-3"
       onClick={handleCopy}
     >
       {copied ? (
