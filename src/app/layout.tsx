@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "3D Ürün Ağırlık Hesaplayıcı",
-  description: "Matrix 3D'de modellenmiş ürünlerin bitmiş halinin ağırlığını hesaplayın",
+  title: "indigo | Ağırlık Hesaplayıcı",
+  description: "3D modelleme ve astar kesim ağırlık hesaplama",
 };
 
 export default function RootLayout({
