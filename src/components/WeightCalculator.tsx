@@ -37,6 +37,7 @@ export function WeightCalculator() {
   const [includeMoldFinishing, setIncludeMoldFinishing] = useState<boolean>(false);
   const [includeNecklaceTip, setIncludeNecklaceTip] = useState<boolean>(false);
   const [includeEarringBack, setIncludeEarringBack] = useState<boolean>(false);
+  const [includeCastEarringBack, setIncludeCastEarringBack] = useState<boolean>(false);
   const [includeBraceletChain, setIncludeBraceletChain] = useState<boolean>(false);
   const [includePendantChain, setIncludePendantChain] = useState<boolean>(false);
 
@@ -86,6 +87,7 @@ export function WeightCalculator() {
         stoneWeight,
         necklaceTipGrams: includeNecklaceTip ? extraWeightSettings.necklaceTipGrams : 0,
         earringBackGrams: includeEarringBack ? extraWeightSettings.earringBackGrams : 0,
+        castEarringBackGrams: includeCastEarringBack ? extraWeightSettings.castEarringBackGrams : 0,
         braceletChainGrams: includeBraceletChain ? extraWeightSettings.braceletChainGrams : 0,
         pendantChainGrams: includePendantChain ? PENDANT_CHAIN_WEIGHT_G : 0,
       };
@@ -127,7 +129,7 @@ export function WeightCalculator() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [watchedValues, lossSettings, extraWeightSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack, includeBraceletChain, includePendantChain, calcMode]);
+  }, [watchedValues, lossSettings, extraWeightSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack, includeCastEarringBack, includeBraceletChain, includePendantChain, calcMode]);
 
   return (
     <TooltipProvider>
@@ -362,6 +364,16 @@ export function WeightCalculator() {
               iconTone="purple"
             />
             <OptionToggle
+              id="castEarringBack"
+              label="Döküm Küpe Arkalığı"
+              tooltip="Döküm küpe arkalığı ekleniyorsa açın. Gram değeri ayarlardan değişir."
+              badge={`+${extraWeightSettings.castEarringBackGrams.toFixed(2)} g`}
+              checked={includeCastEarringBack}
+              onCheckedChange={setIncludeCastEarringBack}
+              icon={<Gem className="h-3.5 w-3.5" />}
+              iconTone="indigo"
+            />
+            <OptionToggle
               id="moldFinishing"
               label="Kalıp Tesviye"
               tooltip="Kalıp tesviye kayıplarını hesaba dahil eder. Yüzde ayarlardan değişir."
@@ -382,9 +394,11 @@ export function WeightCalculator() {
           volumeMm3={volumeMm3 ?? undefined}
           showMoldFinishing={includeMoldFinishing}
           showNecklaceTip={includeNecklaceTip}
-          showEarringBack={includeEarringBack}
           necklaceTipGrams={extraWeightSettings.necklaceTipGrams}
+          showEarringBack={includeEarringBack}
           earringBackGrams={extraWeightSettings.earringBackGrams}
+          showCastEarringBack={includeCastEarringBack}
+          castEarringBackGrams={extraWeightSettings.castEarringBackGrams}
           showBraceletChain={includeBraceletChain}
           braceletChainGrams={extraWeightSettings.braceletChainGrams}
           showPendantChain={includePendantChain}

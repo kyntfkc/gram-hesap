@@ -7,6 +7,7 @@ export interface CalculationParams {
   stoneWeight: number; // g
   necklaceTipGrams: number; // Kolye tepeliği (g), 0 = hesaba dahil değil
   earringBackGrams: number; // Küpe çivi/kelebek (g), 0 = hesaba dahil değil
+  castEarringBackGrams: number; // Döküm küpe arkalığı (g), 0 = hesaba dahil değil
   braceletChainGrams: number; // Bileklik zinciri (g), 0 = hesaba dahil değil
   pendantChainGrams: number; // Kolye zinciri (g), 0 = hesaba dahil değil
 }
@@ -19,7 +20,7 @@ export interface CalculationResult {
 }
 
 export function calculateWeight(params: CalculationParams): CalculationResult {
-  const { volume, materialDensity, infill, moldFinishingLoss, productionLoss, stoneWeight, necklaceTipGrams, earringBackGrams, braceletChainGrams, pendantChainGrams = 0 } = params;
+  const { volume, materialDensity, infill, moldFinishingLoss, productionLoss, stoneWeight, necklaceTipGrams, earringBackGrams, castEarringBackGrams = 0, braceletChainGrams, pendantChainGrams = 0 } = params;
 
   // Hacim mm³'den cm³'e çevir (1 cm³ = 1000 mm³)
   const volumeCm3 = volume / 1000;
@@ -34,7 +35,7 @@ export function calculateWeight(params: CalculationParams): CalculationResult {
   const afterProductionLoss = afterMoldFinishing * (1 - productionLoss / 100);
 
   // 4. Ekstra ağırlıklar (ayarlardan gelen gram değerleri)
-  const extraWeight = (necklaceTipGrams || 0) + (earringBackGrams || 0) + (braceletChainGrams || 0) + (pendantChainGrams || 0);
+  const extraWeight = (necklaceTipGrams || 0) + (earringBackGrams || 0) + (castEarringBackGrams || 0) + (braceletChainGrams || 0) + (pendantChainGrams || 0);
 
   // 5. Final Ağırlık = Üretim Kayıpları Sonrası + Taş Ağırlığı + Ekstra Ağırlıklar
   const finalWeight = afterProductionLoss + stoneWeight + extraWeight;
@@ -64,11 +65,12 @@ export function calculateVolumeFromWeight(
     stoneWeight,
     necklaceTipGrams,
     earringBackGrams,
+    castEarringBackGrams = 0,
     braceletChainGrams,
     pendantChainGrams = 0,
   } = params;
 
-  const extraWeight = (necklaceTipGrams || 0) + (earringBackGrams || 0) + (braceletChainGrams || 0) + (pendantChainGrams || 0);
+  const extraWeight = (necklaceTipGrams || 0) + (earringBackGrams || 0) + (castEarringBackGrams || 0) + (braceletChainGrams || 0) + (pendantChainGrams || 0);
   const afterProductionLoss = targetFinalWeight - stoneWeight - extraWeight;
 
   if (afterProductionLoss <= 0 || materialDensity <= 0) return null;

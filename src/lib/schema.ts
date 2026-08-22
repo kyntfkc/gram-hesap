@@ -60,6 +60,7 @@ export const sheetMetalSchema = z.object({
   selectedMaterialId: z.string().default("14k-gold"),
   includePendantBail: z.boolean().default(false),
   includeBraceletChain: z.boolean().default(false),
+  includeCastEarringBack: z.boolean().default(false),
 });
 
 export type SheetMetalFormData = z.input<typeof sheetMetalSchema>;

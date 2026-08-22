@@ -49,12 +49,14 @@ export function resetLossSettings(): LossSettings {
 export interface ExtraWeightSettings {
   necklaceTipGrams: number; // Kolye tepeliği (g)
   earringBackGrams: number; // Küpe çivi/kelebek (g)
+  castEarringBackGrams: number; // Döküm küpe arkalığı (g)
   braceletChainGrams: number; // Bileklik zinciri (g)
 }
 
 export const defaultExtraWeightSettings: ExtraWeightSettings = {
   necklaceTipGrams: 0.12,
   earringBackGrams: 0.4,
+  castEarringBackGrams: 1.0,
   braceletChainGrams: 0.75,
 };
 

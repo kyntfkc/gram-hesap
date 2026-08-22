@@ -13,13 +13,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Ruler, Layers, HelpCircle, Scale, Sparkles, CheckCircle2, Link2, Link } from "lucide-react";
+import { Ruler, Layers, HelpCircle, Scale, Sparkles, CheckCircle2, Link2, Link, Gem } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { calculateSheetMetal, calculateAreaFromWeight, SheetMetalResult, PENDANT_BAIL_WEIGHT_G, BRACELET_CHAIN_WEIGHT_G, getMaterialFactors } from "@/lib/sheetMetalCalculations";
 import { sheetMetalSchema, SheetMetalFormData } from "@/lib/schema";
 import { Material, getMaterials, defaultMaterial } from "@/lib/materials";
-import { LossSettings, getLossSettings } from "@/lib/settings";
+import { LossSettings, getLossSettings, ExtraWeightSettings, getExtraWeightSettings } from "@/lib/settings";
 import { formatInt, formatGram, saveAreaMm2 } from "@/lib/copyDimensions";
 import { CopyDimensionButton } from "@/components/CopyDimensionButton";
 import { MaterialSettings } from "./MaterialSettings";
@@ -31,10 +31,12 @@ export function SheetMetalCalculator() {
   const [calcMode, setCalcMode] = useState<"gram-to-area" | "area-to-gram">("gram-to-area");
   const [materials, setMaterials] = useState<Material[]>([]);
   const [lossSettings, setLossSettings] = useState<LossSettings>({ moldFinishingLoss: 0, productionLoss: 0 });
+  const [extraWeightSettings, setExtraWeightSettings] = useState<ExtraWeightSettings>(getExtraWeightSettings());
 
   useEffect(() => {
     setMaterials(getMaterials());
     setLossSettings(getLossSettings());
+    setExtraWeightSettings(getExtraWeightSettings());
   }, []);
 
   const {
@@ -52,6 +54,7 @@ export function SheetMetalCalculator() {
       selectedMaterialId: "14k-gold",
       includePendantBail: false,
       includeBraceletChain: false,
+      includeCastEarringBack: false,
     },
     mode: "onChange",
   });
@@ -62,6 +65,7 @@ export function SheetMetalCalculator() {
   const selectedMaterialId = watch("selectedMaterialId");
   const includePendantBail = watch("includePendantBail");
   const includeBraceletChain = watch("includeBraceletChain");
+  const includeCastEarringBack = watch("includeCastEarringBack");
 
   const selectedMaterial = materials.find((m) => m.id === selectedMaterialId) ?? materials[0];
   const factors = getMaterialFactors(selectedMaterialId ?? "14k-gold");
@@ -84,6 +88,8 @@ export function SheetMetalCalculator() {
       materialId: matId,
       includePendantBail: includePendantBail ?? false,
       includeBraceletChain: includeBraceletChain ?? false,
+      includeCastEarringBack: includeCastEarringBack ?? false,
+      castEarringBackGrams: extraWeightSettings.castEarringBackGrams,
     };
 
     if (calcMode === "gram-to-area") {
@@ -120,7 +126,7 @@ export function SheetMetalCalculator() {
         setAreaResult(null);
       }
     }
-  }, [areaMm2, targetGramG, thicknessMm, selectedMaterialId, selectedMaterial, includePendantBail, includeBraceletChain, calcMode]);
+  }, [areaMm2, targetGramG, thicknessMm, selectedMaterialId, selectedMaterial, includePendantBail, includeBraceletChain, includeCastEarringBack, extraWeightSettings.castEarringBackGrams, calcMode]);
 
   return (
     <TooltipProvider>
@@ -140,6 +146,7 @@ export function SheetMetalCalculator() {
                 <MaterialSettings
                   onMaterialsChange={setMaterials}
                   onLossSettingsChange={setLossSettings}
+                  onExtraWeightSettingsChange={setExtraWeightSettings}
                 />
               </div>
 
@@ -305,6 +312,16 @@ export function SheetMetalCalculator() {
                   icon={<Link className="h-3.5 w-3.5" />}
                   iconTone="emerald"
                 />
+                <OptionToggle
+                  id="includeCastEarringBack"
+                  label="Döküm Küpe Arkalığı"
+                  tooltip="Döküm küpe arkalığı ekleniyorsa açın. Gram değeri ayarlardan değişir."
+                  badge={`+${extraWeightSettings.castEarringBackGrams.toFixed(2)} g`}
+                  checked={includeCastEarringBack ?? false}
+                  onCheckedChange={(v) => setValue("includeCastEarringBack", v)}
+                  icon={<Gem className="h-3.5 w-3.5" />}
+                  iconTone="indigo"
+                />
               </OptionGroup>
             </CardContent>
           </Card>
@@ -389,6 +406,17 @@ export function SheetMetalCalculator() {
                           <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Bileklik Zinciri</span>
                         </div>
                         <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">+{formatGram(BRACELET_CHAIN_WEIGHT_G)} g</span>
+                      </div>
+                    )}
+                    {includeCastEarringBack && (
+                      <div className="flex justify-between items-center p-3.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/30 border border-slate-200/50 dark:border-slate-700/50">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+                            <Gem className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                          </div>
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Döküm Küpe Arkalığı</span>
+                        </div>
+                        <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">+{formatGram(extraWeightSettings.castEarringBackGrams)} g</span>
                       </div>
                     )}
                     <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-200/50 dark:border-blue-800/50 shadow-lg">

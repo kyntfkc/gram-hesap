@@ -49,6 +49,7 @@ export function MaterialSettings({
   const [extraWeightInputs, setExtraWeightInputs] = useState<{ [key: string]: string }>(() => ({
     necklaceTipGrams: getExtraWeightSettings().necklaceTipGrams.toString(),
     earringBackGrams: getExtraWeightSettings().earringBackGrams.toString(),
+    castEarringBackGrams: getExtraWeightSettings().castEarringBackGrams.toString(),
     braceletChainGrams: getExtraWeightSettings().braceletChainGrams.toString(),
   }));
   const [isOpen, setIsOpen] = useState(false);
@@ -127,6 +128,7 @@ export function MaterialSettings({
     setExtraWeightInputs({
       necklaceTipGrams: resetExtra.necklaceTipGrams.toString(),
       earringBackGrams: resetExtra.earringBackGrams.toString(),
+      castEarringBackGrams: resetExtra.castEarringBackGrams.toString(),
       braceletChainGrams: resetExtra.braceletChainGrams.toString(),
     });
     onMaterialsChange(resetMat);
@@ -278,6 +280,21 @@ export function MaterialSettings({
                       value={extraWeightInputs.earringBackGrams}
                       onChange={(e) => handleExtraWeightInputChange("earringBackGrams", e.target.value)}
                       onBlur={() => handleExtraWeightBlur("earringBackGrams")}
+                      className="h-9"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="castEarringBackGrams" className="text-sm font-medium">
+                      Döküm Küpe Arkalığı (g)
+                    </Label>
+                    <Input
+                      id="castEarringBackGrams"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={extraWeightInputs.castEarringBackGrams}
+                      onChange={(e) => handleExtraWeightInputChange("castEarringBackGrams", e.target.value)}
+                      onBlur={() => handleExtraWeightBlur("castEarringBackGrams")}
                       className="h-9"
                     />
                   </div>

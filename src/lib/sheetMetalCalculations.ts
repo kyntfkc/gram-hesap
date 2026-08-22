@@ -38,6 +38,8 @@ export interface SheetMetalParams {
   materialId: string;
   includePendantBail?: boolean;
   includeBraceletChain?: boolean;
+  includeCastEarringBack?: boolean;
+  castEarringBackGrams?: number;
 }
 
 export interface SheetMetalResult {
@@ -63,6 +65,8 @@ export function calculateSheetMetal(params: SheetMetalParams): SheetMetalResult 
     materialId,
     includePendantBail = false,
     includeBraceletChain = false,
+    includeCastEarringBack = false,
+    castEarringBackGrams = 0,
   } = params;
 
   const { kerf, finish } = getMaterialFactors(materialId);
@@ -73,6 +77,7 @@ export function calculateSheetMetal(params: SheetMetalParams): SheetMetalResult 
   let finalProductG = afterFinishG;
   if (includePendantBail) finalProductG += PENDANT_BAIL_WEIGHT_G;
   if (includeBraceletChain) finalProductG += BRACELET_CHAIN_WEIGHT_G;
+  if (includeCastEarringBack) finalProductG += castEarringBackGrams;
 
   return {
     theoreticalG: round2(theoreticalG),
@@ -101,6 +106,8 @@ export function calculateAreaFromWeight(
     targetFinalG,
     includePendantBail = false,
     includeBraceletChain = false,
+    includeCastEarringBack = false,
+    castEarringBackGrams = 0,
   } = params;
 
   if (thicknessMm <= 0 || materialDensity <= 0) return null;
@@ -110,7 +117,8 @@ export function calculateAreaFromWeight(
 
   const bail = includePendantBail ? PENDANT_BAIL_WEIGHT_G : 0;
   const bracelet = includeBraceletChain ? BRACELET_CHAIN_WEIGHT_G : 0;
-  const afterFinishG = targetFinalG - bail - bracelet;
+  const castBack = includeCastEarringBack ? castEarringBackGrams : 0;
+  const afterFinishG = targetFinalG - bail - bracelet - castBack;
 
   if (afterFinishG <= 0) return null;
 
