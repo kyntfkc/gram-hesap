@@ -4,6 +4,18 @@ import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Statik varlıklar ve Next iç yolları asla auth'a takılmasın
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon") ||
+    pathname === "/icon.png" ||
+    pathname === "/apple-icon.png" ||
+    /\.(?:svg|png|jpg|jpeg|gif|webp|ico)$/i.test(pathname)
+  ) {
+    return NextResponse.next();
+  }
+
   const isAuthPage = pathname === "/giris" || pathname.startsWith("/giris/");
 
   const token = request.cookies.get(SESSION_COOKIE)?.value;
@@ -26,8 +38,9 @@ export async function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const proxyConfig = {
+// Next.js 16 hâlâ `config` adını okuyor (proxyConfig değil)
+export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };
