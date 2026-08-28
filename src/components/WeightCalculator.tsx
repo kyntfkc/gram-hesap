@@ -20,7 +20,7 @@ import { calculateWeight, calculateVolumeFromWeight, CalculationParams, Calculat
 import { PENDANT_CHAIN_WEIGHT_G } from "@/lib/sheetMetalCalculations";
 import { weightCalculatorSchema } from "@/lib/schema";
 import { Material, getMaterials, defaultMaterial } from "@/lib/materials";
-import { LossSettings, getLossSettings, ExtraWeightSettings, getExtraWeightSettings } from "@/lib/settings";
+import { LossSettings, getLossSettings, ExtraWeightSettings, getExtraWeightSettings, defaultLossSettings } from "@/lib/settings";
 import { saveVolumeMm3 } from "@/lib/copyDimensions";
 import { ResultCard } from "./ResultCard";
 import { MaterialSettings } from "./MaterialSettings";
@@ -31,7 +31,7 @@ export function WeightCalculator() {
   const [volumeMm3, setVolumeMm3] = useState<number | null>(null);
   const [calcMode, setCalcMode] = useState<"gram-to-volume" | "volume-to-gram">("gram-to-volume");
   const [materials, setMaterials] = useState<Material[]>([]);
-  const [lossSettings, setLossSettings] = useState<LossSettings>({ moldFinishingLoss: 0, productionLoss: 0 });
+  const [lossSettings, setLossSettings] = useState<LossSettings>(defaultLossSettings);
   const [extraWeightSettings, setExtraWeightSettings] = useState<ExtraWeightSettings>(getExtraWeightSettings());
   const [selectedMaterialId, setSelectedMaterialId] = useState<string>(defaultMaterial.id);
   const [includeMoldFinishing, setIncludeMoldFinishing] = useState<boolean>(false);

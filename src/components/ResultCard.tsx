@@ -29,7 +29,7 @@ interface ResultCardProps {
   pendantChainGrams?: number;
 }
 
-export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFinishing = false, showNecklaceTip = false, showEarringBack = false, showCastEarringBack = false, showBraceletChain = false, showPendantChain = false, necklaceTipGrams = 0.12, earringBackGrams = 0.4, castEarringBackGrams = 1.0, braceletChainGrams = 0.75, pendantChainGrams = 1.05 }: ResultCardProps) {
+export function ResultCard({ result, volumeMm3, reverseMode = false, showMoldFinishing = false, showNecklaceTip = false, showEarringBack = false, showCastEarringBack = false, showBraceletChain = false, showPendantChain = false, necklaceTipGrams = 0.12, earringBackGrams = 0.4, castEarringBackGrams = 0.9, braceletChainGrams = 0.75, pendantChainGrams = 1.05 }: ResultCardProps) {
   if (!result) {
     return (
       <Card className="w-full border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm">

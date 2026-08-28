@@ -4,8 +4,8 @@ export interface LossSettings {
 }
 
 export const defaultLossSettings: LossSettings = {
-  moldFinishingLoss: 0,
-  productionLoss: 0,
+  moldFinishingLoss: 15,
+  productionLoss: 16,
 };
 
 const LOSS_SETTINGS_KEY = "loss-settings";
@@ -56,7 +56,7 @@ export interface ExtraWeightSettings {
 export const defaultExtraWeightSettings: ExtraWeightSettings = {
   necklaceTipGrams: 0.12,
   earringBackGrams: 0.4,
-  castEarringBackGrams: 1.0,
+  castEarringBackGrams: 0.9,
   braceletChainGrams: 0.75,
 };
 
