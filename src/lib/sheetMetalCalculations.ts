@@ -1,13 +1,23 @@
 export type SheetMetalComplexity = "high" | "low";
 
-/** Kolye tepeliği (bail) ek ağırlığı (g) */
-export const PENDANT_BAIL_WEIGHT_G = 0.12;
+import {
+  BRACELET_CHAIN_G,
+  CAST_EARRING_BACK_G,
+  PENDANT_BAIL_2D_G,
+  PENDANT_CHAIN_G,
+} from "./weightConstants";
+
+/** Astar kesim kolye tepeliği (bail) ek ağırlığı (g) */
+export const PENDANT_BAIL_WEIGHT_G = PENDANT_BAIL_2D_G;
 
 /** Kolye zinciri ek ağırlığı (g) */
-export const PENDANT_CHAIN_WEIGHT_G = 1.05;
+export const PENDANT_CHAIN_WEIGHT_G = PENDANT_CHAIN_G;
 
 /** Bileklik zinciri ek ağırlığı (g) */
-export const BRACELET_CHAIN_WEIGHT_G = 0.75;
+export const BRACELET_CHAIN_WEIGHT_G = BRACELET_CHAIN_G;
+
+/** Döküm küpe arkalığı ek ağırlığı (g) */
+export const CAST_EARRING_BACK_WEIGHT_G = CAST_EARRING_BACK_G;
 
 /**
  * Malzeme bazlı kerf ve cila katsayıları.
@@ -40,7 +50,6 @@ export interface SheetMetalParams {
   includePendantChain?: boolean;
   includeBraceletChain?: boolean;
   includeCastEarringBack?: boolean;
-  castEarringBackGrams?: number;
 }
 
 export interface SheetMetalResult {
@@ -68,7 +77,6 @@ export function calculateSheetMetal(params: SheetMetalParams): SheetMetalResult 
     includePendantChain = false,
     includeBraceletChain = false,
     includeCastEarringBack = false,
-    castEarringBackGrams = 0,
   } = params;
 
   const { kerf, finish } = getMaterialFactors(materialId);
@@ -80,7 +88,7 @@ export function calculateSheetMetal(params: SheetMetalParams): SheetMetalResult 
   if (includePendantBail) finalProductG += PENDANT_BAIL_WEIGHT_G;
   if (includePendantChain) finalProductG += PENDANT_CHAIN_WEIGHT_G;
   if (includeBraceletChain) finalProductG += BRACELET_CHAIN_WEIGHT_G;
-  if (includeCastEarringBack) finalProductG += castEarringBackGrams;
+  if (includeCastEarringBack) finalProductG += CAST_EARRING_BACK_WEIGHT_G;
 
   return {
     theoreticalG: round2(theoreticalG),
@@ -111,7 +119,6 @@ export function calculateAreaFromWeight(
     includePendantChain = false,
     includeBraceletChain = false,
     includeCastEarringBack = false,
-    castEarringBackGrams = 0,
   } = params;
 
   if (thicknessMm <= 0 || materialDensity <= 0) return null;
@@ -122,7 +129,7 @@ export function calculateAreaFromWeight(
   const bail = includePendantBail ? PENDANT_BAIL_WEIGHT_G : 0;
   const chain = includePendantChain ? PENDANT_CHAIN_WEIGHT_G : 0;
   const bracelet = includeBraceletChain ? BRACELET_CHAIN_WEIGHT_G : 0;
-  const castBack = includeCastEarringBack ? castEarringBackGrams : 0;
+  const castBack = includeCastEarringBack ? CAST_EARRING_BACK_WEIGHT_G : 0;
   const afterFinishG = targetFinalG - bail - chain - bracelet - castBack;
 
   if (afterFinishG <= 0) return null;

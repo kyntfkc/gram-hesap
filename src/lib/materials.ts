@@ -39,45 +39,6 @@ export const defaultMaterials: Material[] = [
 
 export const defaultMaterial = defaultMaterials.find((m) => m.id === "14k-gold")!;
 
-const STORAGE_KEY = "material-densities";
-
 export function getMaterials(): Material[] {
-  if (typeof window === "undefined") {
-    return defaultMaterials;
-  }
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      // Stored değerleri default ile birleştir
-      return defaultMaterials.map((material) => {
-        const storedMaterial = parsed.find((m: Material) => m.id === material.id);
-        return storedMaterial ? { ...material, density: storedMaterial.density } : material;
-      });
-    }
-  } catch (error) {
-    console.error("Error loading materials from localStorage:", error);
-  }
-
-  return defaultMaterials;
-}
-
-export function saveMaterials(materials: Material[]): void {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(materials));
-  } catch (error) {
-    console.error("Error saving materials to localStorage:", error);
-  }
-}
-
-export function resetMaterials(): Material[] {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem(STORAGE_KEY);
-  }
   return defaultMaterials;
 }

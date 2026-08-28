@@ -19,20 +19,23 @@ import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/comp
 import { calculateWeight, calculateVolumeFromWeight, CalculationParams, CalculationResult } from "@/lib/calculations";
 import { PENDANT_CHAIN_WEIGHT_G } from "@/lib/sheetMetalCalculations";
 import { weightCalculatorSchema } from "@/lib/schema";
-import { Material, getMaterials, defaultMaterial } from "@/lib/materials";
-import { LossSettings, getLossSettings, ExtraWeightSettings, getExtraWeightSettings, defaultLossSettings } from "@/lib/settings";
+import { defaultMaterials, defaultMaterial } from "@/lib/materials";
+import {
+  NECKLACE_TIP_3D_G,
+  EARRING_BACK_G,
+  CAST_EARRING_BACK_G,
+  BRACELET_CHAIN_G,
+  MOLD_FINISHING_LOSS_PCT,
+  PRODUCTION_LOSS_PCT,
+} from "@/lib/weightConstants";
 import { saveVolumeMm3 } from "@/lib/copyDimensions";
 import { ResultCard } from "./ResultCard";
-import { MaterialSettings } from "./MaterialSettings";
 import { OptionGroup, OptionToggle } from "./OptionToggle";
 
 export function WeightCalculator() {
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [volumeMm3, setVolumeMm3] = useState<number | null>(null);
   const [calcMode, setCalcMode] = useState<"gram-to-volume" | "volume-to-gram">("gram-to-volume");
-  const [materials, setMaterials] = useState<Material[]>([]);
-  const [lossSettings, setLossSettings] = useState<LossSettings>(defaultLossSettings);
-  const [extraWeightSettings, setExtraWeightSettings] = useState<ExtraWeightSettings>(getExtraWeightSettings());
   const [selectedMaterialId, setSelectedMaterialId] = useState<string>(defaultMaterial.id);
   const [includeMoldFinishing, setIncludeMoldFinishing] = useState<boolean>(false);
   const [includeNecklaceTip, setIncludeNecklaceTip] = useState<boolean>(false);
@@ -40,13 +43,6 @@ export function WeightCalculator() {
   const [includeCastEarringBack, setIncludeCastEarringBack] = useState<boolean>(false);
   const [includeBraceletChain, setIncludeBraceletChain] = useState<boolean>(false);
   const [includePendantChain, setIncludePendantChain] = useState<boolean>(false);
-
-  // Client-side'da localStorage'dan yükle
-  useEffect(() => {
-    setMaterials(getMaterials());
-    setLossSettings(getLossSettings());
-    setExtraWeightSettings(getExtraWeightSettings());
-  }, []);
 
   const {
     register,
@@ -66,11 +62,11 @@ export function WeightCalculator() {
   });
 
   useEffect(() => {
-    const currentMaterial = materials.find((m) => m.id === selectedMaterialId);
+    const currentMaterial = defaultMaterials.find((m) => m.id === selectedMaterialId);
     if (currentMaterial) {
       setValue("materialDensity", currentMaterial.density);
     }
-  }, [materials, selectedMaterialId, setValue]);
+  }, [selectedMaterialId, setValue]);
 
   const watchedValues = watch();
 
@@ -82,13 +78,13 @@ export function WeightCalculator() {
       const baseParams: Omit<CalculationParams, "volume"> = {
         materialDensity,
         infill: 100,
-        moldFinishingLoss: includeMoldFinishing ? lossSettings.moldFinishingLoss : 0,
-        productionLoss: lossSettings.productionLoss,
+        moldFinishingLoss: includeMoldFinishing ? MOLD_FINISHING_LOSS_PCT : 0,
+        productionLoss: PRODUCTION_LOSS_PCT,
         stoneWeight,
-        necklaceTipGrams: includeNecklaceTip ? extraWeightSettings.necklaceTipGrams : 0,
-        earringBackGrams: includeEarringBack ? extraWeightSettings.earringBackGrams : 0,
-        castEarringBackGrams: includeCastEarringBack ? extraWeightSettings.castEarringBackGrams : 0,
-        braceletChainGrams: includeBraceletChain ? extraWeightSettings.braceletChainGrams : 0,
+        necklaceTipGrams: includeNecklaceTip ? NECKLACE_TIP_3D_G : 0,
+        earringBackGrams: includeEarringBack ? EARRING_BACK_G : 0,
+        castEarringBackGrams: includeCastEarringBack ? CAST_EARRING_BACK_G : 0,
+        braceletChainGrams: includeBraceletChain ? BRACELET_CHAIN_G : 0,
         pendantChainGrams: includePendantChain ? PENDANT_CHAIN_WEIGHT_G : 0,
       };
 
@@ -129,7 +125,7 @@ export function WeightCalculator() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [watchedValues, lossSettings, extraWeightSettings, includeMoldFinishing, includeNecklaceTip, includeEarringBack, includeCastEarringBack, includeBraceletChain, includePendantChain, calcMode]);
+  }, [watchedValues, includeMoldFinishing, includeNecklaceTip, includeEarringBack, includeCastEarringBack, includeBraceletChain, includePendantChain, calcMode]);
 
   return (
     <TooltipProvider>
@@ -137,8 +133,7 @@ export function WeightCalculator() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <Card className="shadow-xl border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl py-0 gap-0">
           <CardContent className="space-y-3 p-4">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
                 <Calculator className="h-4 w-4" />
               </div>
@@ -146,12 +141,6 @@ export function WeightCalculator() {
                 Parametreler
               </h2>
             </div>
-            <MaterialSettings
-              onMaterialsChange={setMaterials}
-              onLossSettingsChange={setLossSettings}
-              onExtraWeightSettingsChange={setExtraWeightSettings}
-            />
-          </div>
 
           <div className="flex gap-2 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
             <Button
@@ -260,7 +249,7 @@ export function WeightCalculator() {
                 <Select
                   value={selectedMaterialId}
                   onValueChange={(value) => {
-                    const material = materials.find((m) => m.id === value);
+                    const material = defaultMaterials.find((m) => m.id === value);
                     if (material) {
                       setSelectedMaterialId(value);
                       setValue("materialDensity", material.density);
@@ -273,7 +262,7 @@ export function WeightCalculator() {
                     <SelectValue placeholder="Malzeme seçin" />
                   </SelectTrigger>
                   <SelectContent>
-                    {materials.map((material) => (
+                    {defaultMaterials.map((material) => (
                       <SelectItem key={material.id} value={material.id}>
                         {material.name}
                       </SelectItem>
@@ -326,8 +315,8 @@ export function WeightCalculator() {
             <OptionToggle
               id="necklaceTip"
               label="Kolye Tepeliği"
-              tooltip="Kolye tepeliği ekleniyorsa açın. Gram değeri ayarlardan değişir."
-              badge={`+${extraWeightSettings.necklaceTipGrams.toFixed(2)} g`}
+              tooltip={`Kolye tepeliği ekleniyorsa açın. +${NECKLACE_TIP_3D_G.toFixed(2).replace(".", ",")} g eklenir.`}
+              badge={`+${NECKLACE_TIP_3D_G.toFixed(2)} g`}
               checked={includeNecklaceTip}
               onCheckedChange={setIncludeNecklaceTip}
               icon={<Link2 className="h-3.5 w-3.5" />}
@@ -346,8 +335,8 @@ export function WeightCalculator() {
             <OptionToggle
               id="braceletChain"
               label="Bileklik Zinciri"
-              tooltip="Bileklik zinciri ekleniyorsa açın. Gram değeri ayarlardan değişir."
-              badge={`+${extraWeightSettings.braceletChainGrams.toFixed(2)} g`}
+              tooltip={`Bileklik zinciri ekleniyorsa açın. +${BRACELET_CHAIN_G.toFixed(2).replace(".", ",")} g eklenir.`}
+              badge={`+${BRACELET_CHAIN_G.toFixed(2)} g`}
               checked={includeBraceletChain}
               onCheckedChange={setIncludeBraceletChain}
               icon={<Link className="h-3.5 w-3.5" />}
@@ -356,8 +345,8 @@ export function WeightCalculator() {
             <OptionToggle
               id="earringBack"
               label="Küpe Çivi/Kelebek"
-              tooltip="Küpe çivi veya kelebek ekleniyorsa açın. Gram değeri ayarlardan değişir."
-              badge={`+${extraWeightSettings.earringBackGrams.toFixed(2)} g`}
+              tooltip={`Küpe çivi veya kelebek ekleniyorsa açın. +${EARRING_BACK_G.toFixed(2).replace(".", ",")} g eklenir.`}
+              badge={`+${EARRING_BACK_G.toFixed(2)} g`}
               checked={includeEarringBack}
               onCheckedChange={setIncludeEarringBack}
               icon={<Gem className="h-3.5 w-3.5" />}
@@ -366,8 +355,8 @@ export function WeightCalculator() {
             <OptionToggle
               id="castEarringBack"
               label="Döküm Küpe Arkalığı"
-              tooltip="Döküm küpe arkalığı ekleniyorsa açın. Gram değeri ayarlardan değişir."
-              badge={`+${extraWeightSettings.castEarringBackGrams.toFixed(2)} g`}
+              tooltip={`Döküm küpe arkalığı ekleniyorsa açın. +${CAST_EARRING_BACK_G.toFixed(2).replace(".", ",")} g eklenir.`}
+              badge={`+${CAST_EARRING_BACK_G.toFixed(2)} g`}
               checked={includeCastEarringBack}
               onCheckedChange={setIncludeCastEarringBack}
               icon={<Gem className="h-3.5 w-3.5" />}
@@ -376,8 +365,8 @@ export function WeightCalculator() {
             <OptionToggle
               id="moldFinishing"
               label="Kalıp Tesviye"
-              tooltip="Kalıp tesviye kayıplarını hesaba dahil eder. Yüzde ayarlardan değişir."
-              badge={`${lossSettings.moldFinishingLoss}%`}
+              tooltip={`Kalıp tesviye kayıplarını hesaba dahil eder. %${MOLD_FINISHING_LOSS_PCT} kayıp uygulanır.`}
+              badge={`${MOLD_FINISHING_LOSS_PCT}%`}
               checked={includeMoldFinishing}
               onCheckedChange={setIncludeMoldFinishing}
               icon={<Settings2 className="h-3.5 w-3.5" />}
@@ -394,13 +383,13 @@ export function WeightCalculator() {
           volumeMm3={volumeMm3 ?? undefined}
           showMoldFinishing={includeMoldFinishing}
           showNecklaceTip={includeNecklaceTip}
-          necklaceTipGrams={extraWeightSettings.necklaceTipGrams}
+          necklaceTipGrams={NECKLACE_TIP_3D_G}
           showEarringBack={includeEarringBack}
-          earringBackGrams={extraWeightSettings.earringBackGrams}
+          earringBackGrams={EARRING_BACK_G}
           showCastEarringBack={includeCastEarringBack}
-          castEarringBackGrams={extraWeightSettings.castEarringBackGrams}
+          castEarringBackGrams={CAST_EARRING_BACK_G}
           showBraceletChain={includeBraceletChain}
-          braceletChainGrams={extraWeightSettings.braceletChainGrams}
+          braceletChainGrams={BRACELET_CHAIN_G}
           showPendantChain={includePendantChain}
           pendantChainGrams={PENDANT_CHAIN_WEIGHT_G}
         />
