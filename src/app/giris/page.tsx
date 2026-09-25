@@ -9,7 +9,7 @@ export default function GirisPage() {
         <div className="text-center">
           <Logo />
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-            indigo | Ağırlık Hesaplayıcı
+            indigo | Gram Hesap
           </p>
         </div>
         <LoginForm />

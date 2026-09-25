@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "indigo | Ağırlık Hesaplayıcı",
+  title: "indigo | Gram Hesap",
   description: "3D modelleme ve astar kesim ağırlık hesaplama",
 };
 
