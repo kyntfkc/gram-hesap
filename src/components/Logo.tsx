@@ -5,10 +5,10 @@ export function Logo() {
     <div className="inline-flex items-center justify-center">
       <Image
         src="/logo-indigo.png"
-        alt="indigo"
-        width={208}
-        height={94}
-        className="h-[2.925rem] w-auto md:h-[3.25rem]"
+        alt="indigo Gram Hesap"
+        width={953}
+        height={180}
+        className="h-[2.4rem] w-auto md:h-[2.75rem]"
         priority
       />
     </div>
