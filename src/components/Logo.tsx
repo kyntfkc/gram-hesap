@@ -1,8 +1,15 @@
+"use client";
+
 import Image from "next/image";
 
 export function Logo() {
   return (
-    <div className="inline-flex items-center justify-center">
+    <button
+      type="button"
+      onClick={() => window.location.reload()}
+      className="inline-flex items-center justify-center cursor-pointer"
+      aria-label="Sayfayı yenile"
+    >
       <Image
         src="/logo-indigo.png"
         alt="indigo Gram Hesap"
@@ -11,6 +18,6 @@ export function Logo() {
         className="h-[2.4rem] w-auto md:h-[2.75rem]"
         priority
       />
-    </div>
+    </button>
   );
 }
