@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+.github
+.vercel
+.env
+.env.local
+.env*.local
+*.md
+deploy
