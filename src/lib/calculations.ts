@@ -34,7 +34,7 @@ export function calculateWeight(params: CalculationParams): CalculationResult {
   // 3. Üretim Kayıpları Sonrası = Kalıp Tesviye Sonrası × (1 - Üretim Kayıpları / 100)
   const afterProductionLoss = afterMoldFinishing * (1 - productionLoss / 100);
 
-  // 4. Ekstra ağırlıklar (ayarlardan gelen gram değerleri)
+  // 4. Ekstra ağırlıklar (seçilen ek parçaların sabit gram değerleri)
   const extraWeight = (necklaceTipGrams || 0) + (earringBackGrams || 0) + (castEarringBackGrams || 0) + (braceletChainGrams || 0) + (pendantChainGrams || 0);
 
   // 5. Final Ağırlık = Üretim Kayıpları Sonrası + Taş Ağırlığı + Ekstra Ağırlıklar

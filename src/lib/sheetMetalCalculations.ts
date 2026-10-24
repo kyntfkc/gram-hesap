@@ -1,5 +1,3 @@
-export type SheetMetalComplexity = "high" | "low";
-
 import {
   BRACELET_CHAIN_G,
   CAST_EARRING_BACK_G,
@@ -43,7 +41,6 @@ export function getMaterialFactors(materialId: string) {
 export interface SheetMetalParams {
   areaMm2: number;
   thicknessMm: number;
-  complexity: SheetMetalComplexity;
   materialDensity: number;
   materialId: string;
   includePendantBail?: boolean;

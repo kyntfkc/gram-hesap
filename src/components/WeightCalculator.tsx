@@ -68,12 +68,15 @@ export function WeightCalculator() {
     }
   }, [selectedMaterialId, setValue]);
 
-  const watchedValues = watch();
+  const watchedVolume = watch("volume");
+  const watchedTargetWeightG = watch("targetWeightG");
+  const watchedMaterialDensity = watch("materialDensity");
+  const watchedStoneWeight = watch("stoneWeight");
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const materialDensity = Number(watchedValues.materialDensity) || 0;
-      const stoneWeight = Number(watchedValues.stoneWeight) || 0;
+      const materialDensity = Number(watchedMaterialDensity) || 0;
+      const stoneWeight = Number(watchedStoneWeight) || 0;
 
       const baseParams: Omit<CalculationParams, "volume"> = {
         materialDensity,
@@ -89,7 +92,7 @@ export function WeightCalculator() {
       };
 
       if (calcMode === "gram-to-volume") {
-        const targetWeight = Number(watchedValues.targetWeightG) || 0;
+        const targetWeight = Number(watchedTargetWeightG) || 0;
         if (targetWeight > 0 && materialDensity > 0) {
           const calculated = calculateVolumeFromWeight({
             ...baseParams,
@@ -109,7 +112,7 @@ export function WeightCalculator() {
           setVolumeMm3(null);
         }
       } else {
-        const volume = Number(watchedValues.volume) || 0;
+        const volume = Number(watchedVolume) || 0;
         if (volume > 0 && materialDensity > 0) {
           const calculated = calculateWeight({ ...baseParams, volume });
           setResult(calculated);
@@ -125,7 +128,7 @@ export function WeightCalculator() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [watchedValues, includeMoldFinishing, includeNecklaceTip, includeEarringBack, includeCastEarringBack, includeBraceletChain, includePendantChain, calcMode]);
+  }, [watchedVolume, watchedTargetWeightG, watchedMaterialDensity, watchedStoneWeight, includeMoldFinishing, includeNecklaceTip, includeEarringBack, includeCastEarringBack, includeBraceletChain, includePendantChain, calcMode]);
 
   return (
     <TooltipProvider>
@@ -238,14 +241,14 @@ export function WeightCalculator() {
                   <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-help" />
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
-                  <p>Kullanılacak malzemenin yoğunluğunu seçin. Yoğunluk değerlerini ayarlar menüsünden özelleştirebilirsiniz.</p>
+                  <p>Kullanılacak malzemenin yoğunluğunu seçin.</p>
                 </TooltipContent>
               </Tooltip>
             </Label>
             <Controller
               name="materialDensity"
               control={control}
-              render={({ field }) => (
+              render={() => (
                 <Select
                   value={selectedMaterialId}
                   onValueChange={(value) => {

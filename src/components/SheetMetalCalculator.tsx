@@ -74,7 +74,6 @@ export function SheetMetalCalculator() {
 
     const baseParams = {
       thicknessMm: thickness,
-      complexity: "low" as const,
       materialDensity: density,
       materialId: matId,
       includePendantBail: includePendantBail ?? false,
