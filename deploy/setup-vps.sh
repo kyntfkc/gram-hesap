@@ -41,7 +41,7 @@ deploy/ensure-caddy-gramhesap.sh
 
 CRON_FILE="/etc/cron.d/gramhesap-caddy-ensure"
 if [[ ! -f "$CRON_FILE" ]]; then
-  echo "*/2 * * * * root $APP_DIR/deploy/ensure-caddy-gramhesap.sh >>/var/log/gramhesap-caddy-ensure.log 2>&1" > "$CRON_FILE"
+  echo "*/2 * * * * root sh $APP_DIR/deploy/ensure-caddy-gramhesap.sh >>/var/log/gramhesap-caddy-ensure.log 2>&1" > "$CRON_FILE"
   echo "    cron eklendi: $CRON_FILE"
 fi
 
