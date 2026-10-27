@@ -1,4 +1,4 @@
-gramhesap.indigotaki.app {
+gramhesap.indigotaki.net {
 	encode zstd gzip
 
 	handle {
@@ -17,4 +17,9 @@ gramhesap.indigotaki.app {
 		output stdout
 		format console
 	}
+}
+
+# Eski adres; indigotaki.app 2026-11-10'da bitiyor, o zamana kadar yönlendirir
+gramhesap.indigotaki.app {
+	redir https://gramhesap.indigotaki.net{uri} 308
 }

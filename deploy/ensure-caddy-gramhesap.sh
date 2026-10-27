@@ -1,5 +1,5 @@
 #!/bin/sh
-# gramhesap.indigotaki.app bloğunu paylaşılan atolye-stok Caddyfile'ına ekler (yoksa).
+# gramhesap.indigotaki.net bloğunu paylaşılan atolye-stok Caddyfile'ına ekler (yoksa).
 # atolye-stok redeploy Caddyfile'ı ezerse geri yazar.
 # Cron: */2 * * * * root sh /opt/gram-hesap/deploy/ensure-caddy-gramhesap.sh >>/var/log/gramhesap-caddy-ensure.log 2>&1
 set -eu
@@ -7,7 +7,7 @@ set -eu
 CADDYFILE="${CADDYFILE:-/opt/atolye-stok/deploy/Caddyfile}"
 COMPOSE_DIR="${COMPOSE_DIR:-/opt/atolye-stok}"
 SITE_SRC="${SITE_SRC:-/opt/gram-hesap/deploy/caddy-sites/gramhesap.caddy}"
-MARKER="gramhesap.indigotaki.app"
+MARKER="gramhesap.indigotaki.net"
 
 log() {
   echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [ensure-caddy-gramhesap] $*"

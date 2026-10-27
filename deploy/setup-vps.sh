@@ -6,7 +6,7 @@
 set -euo pipefail
 
 APP_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-DOMAIN="gramhesap.indigotaki.app"
+DOMAIN="gramhesap.indigotaki.net"
 
 if [[ "$(id -u)" -ne 0 ]]; then
   echo "Bu script root olarak çalışmalı (sudo)."
